@@ -1,3 +1,4 @@
+import 'package:flashare/views/screens/main_layout.dart';
 import 'package:flashare/views/screens/signup.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/gestures.dart';
@@ -129,7 +130,7 @@ class SignIn extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Home())),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen())),
                     child: Container(
                       height: 64,
                       width: 64,

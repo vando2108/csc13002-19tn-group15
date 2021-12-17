@@ -15,23 +15,23 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Categories(),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _index,
-        onTap: (index) {
-          setState(() {
-            _index = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 24), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble, size: 24), label: "Chat"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Request"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   currentIndex: _index,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _index = index;
+      //     });
+      //   },
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.home_outlined, size: 24), label: "Home"),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.chat_bubble, size: 24), label: "Chat"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.book), label: "Request"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
+      //   ],
+      // ),
     );
   }
 }
