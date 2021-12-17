@@ -1,3 +1,5 @@
+import 'package:flashare/views/components/home_header.dart';
+import 'package:flashare/views/widgets/announce.dart';
 import 'package:flashare/views/widgets/list_item.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +15,51 @@ class _HomeState extends State<Home> {
   var _index = 0;
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: const Categories(),
+      backgroundColor: Colors.white,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 40,
+          ),
+          HomeHeader(size: size),
+          const SizedBox(
+            height: 20,
+          ),
+          GroupText("Event"),
+          const AnnounceWidget(
+            imgPath: "https://www.hcmus.edu.vn/images/2020/04/07/bn2.jpg", 
+            title: "HCMUS Donation Event",
+            sub_title: "The clothing donation event will be organize on November 21 at HCMUS ",
+          ),
+          GroupText("Categories"),
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CategorieCard(iconPath: "assets/fork.png", title: "Food",),
+              CategorieCard(iconPath: "assets/tshirt.png", title: "Clothes",),
+              CategorieCard(iconPath: "assets/electronics.png", title: "Houseware",),
+              CategorieCard(iconPath: "assets/more.png", title: "More",),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          GroupText("Item"),
+          const ListItem(),
+          GroupText("Announce"),
+          const AnnounceWidget(
+            imgPath: "https://lightcharity.com/wp-content/uploads/2020/01/A-GREAT-1000.jpg",
+            title: "Top Contributor",
+            sub_title: "Help others and be happy",
+          )
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _index,
@@ -34,119 +79,60 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-class Categories extends StatelessWidget {
-  const Categories({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var _index = 0;
-    final size = MediaQuery.of(context).size;
-    return DefaultTabController(
-      length: 4,
-      initialIndex: 0,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundedInputField(
-                    hintText: "Search",
-                    icon: Icons.search,
-                    onChanged: (value) {}),
-              ],
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            TabBar(
-              isScrollable: true,
-              indicatorColor: const Color(0xff4285F4),
-              labelColor: const Color(0xff4285F4),
-              unselectedLabelColor: const Color(0xff9A9A9D),
-              labelStyle: const TextStyle(fontSize: 16),
-              onTap: (value) {
-                _index = value;
-              },
-              tabs: const [
-                Tab(
-                  text: "Foods",
-                ),
-                Tab(
-                  text: "Clothes",
-                ),
-                Tab(
-                  text: "Houseware",
-                ),
-                Tab(
-                  text: "Others",
-                ),
-              ],
-            ),
-            const ListItem(),
-            const TopContributor()
-          ],
+  // ignore: non_constant_identifier_names
+  Row GroupText(String text) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 25,
         ),
-      ),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 18, color: Colors.black),
+        ),
+      ],
     );
   }
 }
 
-class TopContributor extends StatelessWidget {
-  const TopContributor({
-    Key? key,
+class CategorieCard extends StatelessWidget {
+  const CategorieCard({
+    Key? key, required this.iconPath, required this.title,
   }) : super(key: key);
 
+  final String iconPath;
+  final String title;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      width: 55,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Top Contributor",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Container(
-            width: double.infinity,
-            height: 166,
-            margin: EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: AssetImage("assets/topcontributor.png"),
-                fit: BoxFit.cover,
-              )
-            ),
-            child: DecoratedBox(
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFFF4B400).withOpacity(0.7),
-                    Colors.white.withOpacity(0.7),
-                  ]
-                )
-              ),
-              child: Row(
-                children: const [
-                Expanded(
-                  child: Text(
-                    "Top 1",
-                    style: TextStyle(fontSize: 40, color: Colors.white),
+                  color: const Color(0xfff4b400).withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10)),
+              child: 
+                Image.asset(iconPath,
+                  color: const Color(
+                    0xffBA8900,
                   ),
+                  scale: 0.9,
                 ),
-
-              ],),
             ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10)
           )
         ],
       ),
