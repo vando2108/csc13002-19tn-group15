@@ -50,7 +50,7 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: Container(
-        color: Color(0xffDBE3ED),
+        color: Color(0xffF0F6FF),
         height: 60,
         child: TabBar(
           indicatorSize: TabBarIndicatorSize.label,
@@ -80,18 +80,18 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
               ProfileTab(),
             ],
           ),
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 10,
-                sigmaY: 10,
-              ),
-              child: Container(
-                height: 76,
-                color: Colors.black.withOpacity(0),
-              ),
-            ),
-          )
+          // ClipRect(
+          //   child: BackdropFilter(
+          //     filter: ImageFilter.blur(
+          //       sigmaX: 10,
+          //       sigmaY: 10,
+          //     ),
+          //     child: Container(
+          //       height: 60,
+          //       color: Colors.black.withOpacity(0),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -121,16 +121,16 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
                 color: tabIndex != _currentTab
                     ? Color.fromRGBO(139, 151, 168, 1)
                     : Color.fromRGBO(61, 50, 112, 1),
-                shadows: <Shadow>[
-                  Shadow(
-                    blurRadius: 20.0,
-                    color: tabIndex != _currentTab
-                        ? Color.fromRGBO(139, 151, 168, 1)
-                        : _currentTab == 0 || _currentTab == 3
-                            ? Color.fromRGBO(2, 255, 196, 1)
-                            : Color.fromRGBO(254, 44, 146, 1),
-                  ),
-                ],
+                // shadows: <Shadow>[
+                //   Shadow(
+                //     blurRadius: 20.0,
+                //     color: tabIndex != _currentTab
+                //         ? Color.fromRGBO(139, 151, 168, 1)
+                //         : _currentTab == 0 || _currentTab == 3
+                //             ? Color.fromRGBO(2, 255, 196, 1)
+                //             : Color.fromRGBO(254, 44, 146, 1),
+                //   ),
+                // ],
               ),
             ),
           ),
