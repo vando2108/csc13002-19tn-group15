@@ -1,6 +1,6 @@
+import 'package:flashare/views/widgets/list_item.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Categories(),
+      body: const Categories(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _index,
@@ -71,7 +71,7 @@ class Categories extends StatelessWidget {
               indicatorColor: const Color(0xff4285F4),
               labelColor: const Color(0xff4285F4),
               unselectedLabelColor: const Color(0xff9A9A9D),
-              labelStyle: const TextStyle(fontSize: 20),
+              labelStyle: const TextStyle(fontSize: 16),
               onTap: (value) {
                 _index = value;
               },
@@ -90,26 +90,8 @@ class Categories extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              width: size.width - 30,
-              height: size.height - 170,
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: .85,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: const [
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                ],
-              ),
-            )
+            const ListItem(),
+            const TopContributor()
           ],
         ),
       ),
@@ -117,31 +99,56 @@ class Categories extends StatelessWidget {
   }
 }
 
-class CardWidget extends StatelessWidget {
-  const CardWidget({
+class TopContributor extends StatelessWidget {
+  const TopContributor({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      height: 216,
-      width: 147,
-      child: InkWell(
-        onTap: null,
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 3.0,
-                  blurRadius: 5.0,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Top Contributor",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Container(
+            width: double.infinity,
+            height: 166,
+            margin: EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: const DecorationImage(
+                image: AssetImage("assets/topcontributor.png"),
+                fit: BoxFit.cover,
+              )
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFFF4B400).withOpacity(0.7),
+                    Colors.white.withOpacity(0.7),
+                  ]
+                )
+              ),
+              child: Row(
+                children: const [
+                Expanded(
+                  child: Text(
+                    "Top 1",
+                    style: TextStyle(fontSize: 40, color: Colors.white),
+                  ),
                 ),
-              ],
-              color: Colors.white),
-        ),
+
+              ],),
+            ),
+          )
+        ],
       ),
     );
   }
