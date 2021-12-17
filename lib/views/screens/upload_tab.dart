@@ -35,38 +35,45 @@ class _UploadTabState extends State<UploadTab> with SingleTickerProviderStateMix
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          leading:
+        body: Column(
+          children: [
+            const SizedBox(height: 30),
             _searchBar(),
-          bottom: TabBar(
+          TabBar(
             controller: _tabController,
-            indicatorColor: Color(0x4285F4),
-            tabs: [
+            indicatorColor: const Color(0xff4285F4),
+            tabs: const [
               Tab(text: 'Posted'),
               Tab(text: 'In Progress',),
               Tab(text: 'Sent',),
             ],
           ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                _postedView(),
+                _inProgressView(),
+                _sentView(),
+              ]),
+            ),
+          ],
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-          _postedView(),
-          _inProgressView(),
-          _sentView(),
-        ]),
       ),
     );
   }
 
   Widget _searchBar() {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RoundedInputField(
-              hintText: "Search", icon: Icons.search, onChanged: (value) {}),
-        ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RoundedInputField(
+                hintText: "Search", icon: Icons.search, onChanged: (value) {}),
+          ],
+        ),
       ),
     );
   }

@@ -91,7 +91,7 @@ class CategorieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      width: 55,
+      width: 57,
       child: Column(
         children: [
           AspectRatio(
@@ -116,7 +116,7 @@ class CategorieCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 10)
+            style: const TextStyle(fontSize: 9)
           )
         ],
       ),
