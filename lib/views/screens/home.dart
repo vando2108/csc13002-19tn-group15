@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,23 +60,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _index,
-        onTap: (index) {
-          setState(() {
-            _index = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 24), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble, size: 24), label: "Chat"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Request"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
-        ],
-      ),
+      
     );
   }
 
