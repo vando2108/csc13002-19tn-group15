@@ -1,20 +1,24 @@
+import 'package:flashare/views/widgets/avatar_circle.dart';
+import 'package:flashare/views/widgets/image_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ItemBox extends StatelessWidget {
+class ItemRequestBox extends StatelessWidget {
   final String imgUrl;
   final String category;
   final String name;
   final String description;
-  final int dueDate;
+  final String imgUser;
+  final String nameUser;
 
-  const ItemBox({
+  const ItemRequestBox({
     Key? key,
     required this.imgUrl,
     required this.category,
     required this.description,
     required this.name,
-    required this.dueDate,
+    required this.imgUser,
+    required this.nameUser,
   }) : super(key: key);
 
   @override
@@ -33,10 +37,7 @@ class ItemBox extends StatelessWidget {
               flex: 3,
               child: Container(
                 padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                child: Image.network(imgUrl),
+                child: ImageBorder(image: Image.network(imgUrl)),
               ),
             ),
             Expanded(
@@ -68,15 +69,20 @@ class ItemBox extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      '$dueDate days left',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red,
-                        fontFamily: GoogleFonts.roboto().fontFamily,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AvatarCircle(imgUrl: imgUser, radius: 12),
+                        SizedBox(width: 8),
+                        Text(
+                          nameUser,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        SizedBox(width: 24)
+                      ],
                     ),
                   ],
                 ),
