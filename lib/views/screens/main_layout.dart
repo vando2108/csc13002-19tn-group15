@@ -1,4 +1,5 @@
 import 'package:flashare/views/screens/main_tab_bar.dart';
+import 'package:flashare/views/screens/upload_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,6 +47,7 @@ class MainScreen extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => const MainTabBar(),
+        '/upload_item': (context) => const UploadItemScreen(),
       },
     );
   }
