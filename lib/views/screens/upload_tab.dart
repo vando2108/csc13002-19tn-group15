@@ -55,9 +55,9 @@ class _UploadTabState extends State<UploadTab>
                   indicatorPadding:
                       const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
-                    Tab(text: 'Posted'),
-                    Tab(text: 'In Progress'),
-                    Tab(text: 'Sent'),
+                    Tab(text: 'Đã đăng'),
+                    Tab(text: 'Đang giao'),
+                    Tab(text: 'Đã gửi'),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -82,7 +82,7 @@ class _UploadTabState extends State<UploadTab>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-              hintText: "Search", icon: Icons.search, onChanged: (value) {}),
+              hintText: "Tìm kiếm", icon: Icons.search, onChanged: (value) {}),
         ],
       ),
     );

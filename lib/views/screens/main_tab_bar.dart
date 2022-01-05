@@ -58,10 +58,10 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
           indicatorColor: Colors.transparent,
           controller: _tabController,
           tabs: [
-            _buildTabBarItem(0, 'Home', Icons.home_outlined),
-            _buildTabBarItem(1, 'Chat', Icons.chat_bubble),
-            _buildTabBarItem(2, 'Upload', Icons.book),
-            _buildTabBarItem(3, 'Profile', Icons.person),
+            _buildTabBarItem(0, 'Trang chủ', Icons.home_outlined),
+            _buildTabBarItem(1, 'Nhắn tin', Icons.chat_bubble),
+            _buildTabBarItem(2, 'Tải lên', Icons.book),
+            _buildTabBarItem(3, 'Cá nhân', Icons.person),
           ],
           onTap: (index) {
             
@@ -73,7 +73,7 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
         children: [
           IndexedStack(
             index: _currentTab,
-            children: [
+            children: const [
               Home(),
               ChatTab(),
               UploadTab(),
@@ -116,8 +116,8 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
               title,
               style: TextStyle(
                 letterSpacing: 1.05,
-                fontFamily: GoogleFonts.josefinSans().fontFamily,
-                fontSize: 12,
+                fontFamily: GoogleFonts.roboto().fontFamily,
+                fontSize: 10,
                 color: tabIndex != _currentTab
                     ? Color.fromRGBO(139, 151, 168, 1)
                     : Color.fromRGBO(61, 50, 112, 1),

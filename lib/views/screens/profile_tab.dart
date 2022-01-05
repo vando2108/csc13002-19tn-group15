@@ -20,7 +20,7 @@ class _ProfileTabState extends State<ProfileTab> {
             children: [
               Center(
                 child: Text(
-                  'My Profile',
+                  'Thông tin của tôi',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -51,13 +51,14 @@ class _ProfileTabState extends State<ProfileTab> {
           SizedBox(width: 24),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Ronaldo',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               SizedBox(height: 12),
-              Text('Admin',
+              Text('Quản trị viên',
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 12),
@@ -65,7 +66,21 @@ class _ProfileTabState extends State<ProfileTab> {
                 children: List.generate(5, (index) {
                   return Icon(Icons.star, color: Colors.yellow,);
                 }),
-              )
+              ),
+              SizedBox(height: 12),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/review');
+                },
+                child: Text(
+                  '4 đánh giá',
+                  style: TextStyle(
+                    color: Color.fromRGBO(66, 133, 244, 1),
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
             ],
           )
         ],
@@ -79,7 +94,7 @@ class _ProfileTabState extends State<ProfileTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Information',
+            'Thông tin',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -135,7 +150,7 @@ class _ProfileTabState extends State<ProfileTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Settings',
+            'Cài đặt',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -143,29 +158,39 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
+            onPressed: (){},
             icon: Icons.person,
-            action: 'Change profile',
+            action: 'Thay đổi thông tin cá nhân',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
           SizedBox(height: 20),
           _buttonBox(
-            icon: Icons.password,
-            action: 'Change password',
+            onPressed: (){
+              Navigator.pushNamed(context, '/change_password');
+            },
+            icon: Icons.security,
+            action: 'Thay đổi mật khẩu',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
           SizedBox(height: 20),
           _buttonBox(
-            icon: Icons.exit_to_app,
-            action: 'Change Profile',
-            color: Colors.white,
-            background: Color(0xff4285F4),
-          ),
-          SizedBox(height: 20),
-          _buttonBox(
+            onPressed: (){
+              Navigator.pushNamed(context, '/my_request');
+            },
             icon: Icons.storage,
-            action: 'Sign out',
+            action: 'Yêu cầu của tôi',
+            color: Colors.white,
+            background: Color(0xff4285F4),
+          ),
+          SizedBox(height: 20),
+          _buttonBox(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon: Icons.exit_to_app,
+            action: 'Đăng xuất',
             color: Color(0xff395185),
             background: Color.fromRGBO(218, 218, 218, 0.5),
           ),
@@ -176,42 +201,46 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Widget _buttonBox({
-    required IconData icon, 
+    required IconData icon,
     required String action,
     required Color color,
     required Color background,
+    required var onPressed,
   }) {
-    return Container(
-      height: 65,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        color: background,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Row(
-              children: [
-                SizedBox(width: 20),
-                Icon(icon, color: color),
-                SizedBox(width: 20),
-                Text(
-                  action,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: color,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        height: 65,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          color: background,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 5,
+              child: Row(
+                children: [
+                  SizedBox(width: 20),
+                  Icon(icon, color: color),
+                  SizedBox(width: 20),
+                  Text(
+                    action,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Icon(Icons.arrow_right, color: color),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: Icon(Icons.arrow_right, color: color),
+            ),
+          ],
+        ),
       ),
     );
   }

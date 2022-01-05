@@ -10,6 +10,7 @@ class ItemRequestBox extends StatelessWidget {
   final String description;
   final String imgUser;
   final String nameUser;
+  final Function()? onTap;
 
   const ItemRequestBox({
     Key? key,
@@ -19,12 +20,13 @@ class ItemRequestBox extends StatelessWidget {
     required this.name,
     required this.imgUser,
     required this.nameUser,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),

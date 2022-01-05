@@ -15,8 +15,8 @@ class UploadItemScreen extends StatefulWidget {
 }
 
 class _UploadItemScreenState extends State<UploadItemScreen> {
-  List<String> categories = ['Clothes', 'Houseware', 'Food'];
-  String dropdownValue = 'Clothes';
+  List<String> categories = ['Áo quần', 'Đồ gia dụng', 'Thức ăn'];
+  String dropdownValue = 'Áo quần';
   File? _image;
   final ImagePicker _picker = ImagePicker();
   DateTime selectedDate = DateTime.now();
@@ -25,31 +25,33 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   Widget build(BuildContext context) {
     AppSize.config(context);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Upload item',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-            fontFamily: GoogleFonts.roboto().fontFamily,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 36),
+              SizedBox(height: 60),
+              Row(
+                children: [
+                  SizedBox(width: 20),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(CupertinoIcons.back),
+                  ),
+                  SizedBox(width: 60),
+                  Text(
+                    'Tải lên vật phẩm',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 36),
               RoundedInputField(
-                hintText: 'Name',
+                hintText: 'Tên vật phẩm',
                 icon: Icons.food_bank,
                 onChanged: (value) {},
               ),
@@ -79,12 +81,11 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         height: 60,
         minWidth: 200,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-          side: BorderSide(width: 1),
+          borderRadius: BorderRadius.circular(20),
         ),
         onPressed: () {},
         child: Text(
-          'Upload',
+          'Tải lên',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -119,7 +120,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
             ),
             child: MaterialButton(
               onPressed: () => _selectDate(context),
-              child: Text('Due date'),
+              child: Text('Hạn sử dụng'),
             ),
           ),
           SizedBox(width: 36),
@@ -150,7 +151,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         maxLines: 6,
         onChanged: (value) {},
         decoration: InputDecoration(
-          hintText: 'Description',
+          hintText: 'Mô tả',
           border: InputBorder.none,
         ),
       ),
@@ -200,7 +201,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               children: <Widget>[
                 new ListTile(
                   leading: new Icon(Icons.photo_library),
-                  title: new Text('Photo Library'),
+                  title: new Text('Ảnh từ thư viện'),
                   onTap: () {
                     _imgFromGallery();
                     Navigator.of(context).pop();
@@ -208,7 +209,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                 ),
                 new ListTile(
                   leading: new Icon(Icons.photo_camera),
-                  title: new Text('Camera'),
+                  title: new Text('Chụp ảnh'),
                   onTap: () {
                     _imgFromCamera();
                     Navigator.of(context).pop();
@@ -251,7 +252,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           Icon(Icons.category),
           const SizedBox(width: 20),
           DropdownButton(
-            hint: Text('Category'),
+            hint: Text('Loại vật phẩm'),
             value: dropdownValue,
             icon: Icon(Icons.keyboard_arrow_down),
             items: categories.map((String items) {
