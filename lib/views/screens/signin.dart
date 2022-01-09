@@ -170,23 +170,32 @@ class SignIn extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 1,
-                    width: (size.width - 118) / 2,
-                    color: const Color(0xffA8A6A7),
-                  ),
-                  const SizedBox(width: 16,),
-                  const Text(
-                    "Sign in with",
-                    style: TextStyle(
-                      fontSize: 16
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: 1,
+                      color: const Color(0xffA8A6A7),
                     ),
                   ),
-                  const SizedBox(width: 16,),
-                  Container(
-                    height: 1,
-                    width: (size.width - 118) / 2,
-                    color: const Color(0xffA8A6A7),
+                  // const SizedBox(width: 16,),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: const Text(
+                        "Sign in with",
+                        style: TextStyle(
+                          fontSize: 16
+                        ),
+                      ),
+                    ),
+                  ),
+                  // const SizedBox(width: 16,),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: 1,
+                      color: const Color(0xffA8A6A7),
+                    ),
                   ),
                 ],
               ),
