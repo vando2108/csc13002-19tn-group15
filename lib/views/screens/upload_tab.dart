@@ -65,7 +65,7 @@ class _UploadTabState extends State<UploadTab> with SingleTickerProviderStateMix
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-              hintText: "Search", icon: Icons.search, onChanged: (value) {}),
+              hintText: "Search", icon: Icons.search),
         ],
       ),
     );

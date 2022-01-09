@@ -1,16 +1,16 @@
-
 // ignore: must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
-  final ValueChanged<String> onChanged;
+  final controller;
   const RoundedInputField({
     Key? key,
     required this.hintText,
     required this.icon,
-    required this.onChanged,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -23,8 +23,14 @@ class RoundedInputField extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         color: const Color(0xff7B6363).withOpacity(0.1),
       ),
-      child: TextField(
-        onChanged: onChanged,
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter some text';
+          }
+          return null;
+        },
+        controller: controller,
         decoration: InputDecoration(
           icon: Icon(
             icon,

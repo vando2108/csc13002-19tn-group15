@@ -98,7 +98,6 @@ class SignIn extends StatelessWidget {
               RoundedInputField(
                 icon: Icons.email,
                 hintText: "Your email",
-                onChanged: (value) {},
               ),
               const SizedBox(
                 height: 10,
@@ -106,7 +105,7 @@ class SignIn extends StatelessWidget {
               RoundedInputField(
                   hintText: "Password",
                   icon: Icons.lock,
-                  onChanged: (value) {}),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -156,7 +155,7 @@ class SignIn extends StatelessWidget {
                   ),
                   GestureDetector(
                     // ignore: avoid_print
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp())),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp())),
                     child: const Text(
                       "Sign up",
                       style: TextStyle(
