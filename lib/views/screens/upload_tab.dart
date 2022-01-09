@@ -82,7 +82,10 @@ class _UploadTabState extends State<UploadTab>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-              hintText: "Tìm kiếm", icon: Icons.search, onChanged: (value) {}),
+              hintText: "Tìm kiếm", 
+              icon: Icons.search,
+              onChanged: (value){},
+          ),
         ],
       ),
     );
