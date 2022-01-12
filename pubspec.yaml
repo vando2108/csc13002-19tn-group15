@@ -27,6 +27,7 @@ dependencies:
   hive_flutter: ^1.0.0
   dio: ^4.0.0
   
+  flutter_secure_storage: ^5.0.2
   flutter:
     sdk: flutter
 
