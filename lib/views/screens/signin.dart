@@ -1,6 +1,9 @@
+import 'package:flashare/models/user.dart';
+import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/main_layout.dart';
 import 'package:flashare/views/screens/signup.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +11,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'home.dart';
 
 class SignIn extends StatelessWidget {
-  const SignIn({Key? key}) : super(key: key);
+  SignIn({Key? key}) : super(key: key);
+  final _email_controller = new TextEditingController();
+  final _password_controller = new TextEditingController();
+  final _form_key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -95,16 +101,25 @@ class SignIn extends StatelessWidget {
               const SizedBox(
                 height: 58,
               ),
-              RoundedInputField(
-                icon: Icons.email,
-                hintText: "Your email",
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              RoundedInputField(
-                  hintText: "Password",
-                  icon: Icons.lock,
+              Form(
+                key: _form_key,
+                child: Column(
+                  children: [
+                    RoundedInputField(
+                      icon: Icons.email,
+                      hintText: "Your email",
+                      controller: _email_controller,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RoundedInputField(
+                      hintText: "Password",
+                      icon: Icons.lock,
+                      controller: _password_controller,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -129,7 +144,39 @@ class SignIn extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen())),
+                    onTap: () async {
+                      if (_form_key.currentState!.validate()) {
+                        String email = _email_controller.text;
+                        String password = _password_controller.text;
+                        User newUser = User(
+                            ID: "", Name: "", Email: email, Password: password);
+
+                        List respone = await newUser.SignIn();
+                        print(respone);
+                        if (respone[0] == false) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("Error"),
+                                  content: Text(respone[1]),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text("Close"))
+                                  ],
+                                );
+                              });
+                        } else {
+                          await SecureStorage.writeSecureData(
+                              "USER_ID", respone[1]["id"]);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MainScreen()));
+                        }
+                      }
+                    },
                     child: Container(
                       height: 64,
                       width: 64,
@@ -137,13 +184,20 @@ class SignIn extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Color(0xff4285F4),
                       ),
-                      child: const Icon(Icons.arrow_forward, color: Colors.white,),
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  SizedBox(width: size.width * 0.1,)
+                  SizedBox(
+                    width: size.width * 0.1,
+                  )
                 ],
               ),
-              const SizedBox(height: 14,),
+              const SizedBox(
+                height: 14,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -155,18 +209,19 @@ class SignIn extends StatelessWidget {
                   ),
                   GestureDetector(
                     // ignore: avoid_print
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp())),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUp())),
                     child: const Text(
                       "Sign up",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                      ),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   )
                 ],
               ),
-              const SizedBox(height: 31,),
+              const SizedBox(
+                height: 31,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -183,9 +238,7 @@ class SignIn extends StatelessWidget {
                     child: Center(
                       child: const Text(
                         "Sign in with",
-                        style: TextStyle(
-                          fontSize: 16
-                        ),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
@@ -199,7 +252,9 @@ class SignIn extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -211,21 +266,24 @@ class SignIn extends StatelessWidget {
                     ),
                     onPressed: null,
                   ),
-                  const SizedBox(width: 63,),
+                  const SizedBox(
+                    width: 63,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: ElevatedButton(
-                      onPressed: () => print("google login"), 
-                      style: ButtonStyle(
-                        shadowColor: MaterialStateProperty.all(Colors.transparent),
-                        backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                      ),
-                      child: Image.asset(
-                        "assets/google.png", 
-                        height: 43, 
-                        width: 45,
-                      )
-                    ),
+                        onPressed: () => print("google login"),
+                        style: ButtonStyle(
+                          shadowColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: Image.asset(
+                          "assets/google.png",
+                          height: 43,
+                          width: 45,
+                        )),
                   )
                 ],
               )
