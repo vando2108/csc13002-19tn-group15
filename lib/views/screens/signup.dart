@@ -1,5 +1,6 @@
 import 'package:flashare/models/user.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatelessWidget {
@@ -133,11 +134,39 @@ class SignUp extends StatelessWidget {
                                     Name: name,
                                     Email: email,
                                     Password: password);
-                                String respone = await newUser.SignUp();
-                                if (respone == "invalid parameters") {
-                                  AlertDialog(
-                                    title: Text("Invalid Parameters"),
-                                  );
+                                List respone = await newUser.SignUp();
+                                print(respone);
+                                if (respone[0] == false) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CupertinoAlertDialog(
+                                          title: Text("Error"),
+                                          content: Text(respone[1]),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: Text("Close"))
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CupertinoAlertDialog(
+                                          title: Text("Create successful"),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Close"))
+                                          ],
+                                        );
+                                      });
                                 }
                               }
                             },
