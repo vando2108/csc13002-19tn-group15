@@ -53,7 +53,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               RoundedInputField(
                 hintText: 'Tên vật phẩm',
                 icon: Icons.food_bank,
-                onChanged: (value) {},
               ),
               const SizedBox(height: 36),
               _categoryBox(),

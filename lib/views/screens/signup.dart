@@ -1,8 +1,14 @@
+import 'package:flashare/models/user.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatelessWidget {
-  const SignUp({Key? key}) : super(key: key);
+  SignUp({Key? key}) : super(key: key);
+
+  final _name_controller = new TextEditingController();
+  final _email_controller = new TextEditingController();
+  final _password_controller = new TextEditingController();
+  final _form_key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +49,12 @@ class SignUp extends StatelessWidget {
                         icon: const Icon(
                           Icons.arrow_back_ios_new,
                           color: Colors.white,
-                        )
-                    ),
+                        )),
                   ],
                 ),
-                const SizedBox(height: 55,),
+                const SizedBox(
+                  height: 55,
+                ),
                 Row(
                   children: const [
                     SizedBox(
@@ -81,41 +88,83 @@ class SignUp extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 36,),
-                RoundedInputField(
-                  hintText: "Full Name", 
-                  icon: Icons.person, 
-                  onChanged: (value) => {}
+                const SizedBox(
+                  height: 36,
                 ),
-                const SizedBox(height: 10,),
-                RoundedInputField(
-                  hintText: "Your Email", 
-                  icon: Icons.email,
-                  onChanged: (value) => {}
-                ),
-                const SizedBox(height: 10,),
-                RoundedInputField(
-                  hintText: "Passwod", 
-                  icon: Icons.lock, 
-                  onChanged: (value) => {}
-                ),
-                const SizedBox(height: 12,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 64,
-                      width: 64,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xff4285F4),
+                Form(
+                  key: _form_key,
+                  child: Column(
+                    children: [
+                      RoundedInputField(
+                        hintText: "Full Name",
+                        icon: Icons.person,
+                        controller: _name_controller,
                       ),
-                      child: const Icon(Icons.arrow_forward, color: Colors.white,),
-                    ),
-                    SizedBox(width: size.width * 0.1,)
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RoundedInputField(
+                        hintText: "Your Email",
+                        icon: Icons.email,
+                        controller: _email_controller,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RoundedInputField(
+                        hintText: "Passwod",
+                        icon: Icons.lock,
+                        controller: _password_controller,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              if (_form_key.currentState!.validate()) {
+                                String name = _name_controller.text;
+                                String email = _email_controller.text;
+                                String password = _password_controller.text;
+                                User newUser = User(
+                                    ID: "",
+                                    Name: name,
+                                    Email: email,
+                                    Password: password);
+                                String respone = await newUser.SignUp();
+                                if (respone == "invalid parameters") {
+                                  AlertDialog(
+                                    title: Text("Invalid Parameters"),
+                                  );
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: 64,
+                              width: 64,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff4285F4),
+                              ),
+                              child: const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.1,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 95,),
+                const SizedBox(
+                  height: 95,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -131,13 +180,14 @@ class SignUp extends StatelessWidget {
                       child: const Text(
                         "Sign in",
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    const SizedBox(width: 11,)
-                  ],)
+                    const SizedBox(
+                      width: 11,
+                    )
+                  ],
+                )
               ],
             )
           ],

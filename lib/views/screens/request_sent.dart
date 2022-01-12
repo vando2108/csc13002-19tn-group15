@@ -102,7 +102,10 @@ class _RequestSentScreenState extends State<RequestSentScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-              hintText: "Tìm kiếm", icon: Icons.search, onChanged: (value) {}),
+              hintText: "Tìm kiếm", 
+              icon: Icons.search, 
+              onChanged: (value) {}
+          ),
         ],
       ),
     );

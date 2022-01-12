@@ -5,7 +5,7 @@ part 'user.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class User extends Equatable {
-  final String userId;
+  final String id;
   final String email;
   final String? passwordHashCode;
   final String fullName;
@@ -15,7 +15,7 @@ class User extends Equatable {
   final double? rate;
 
   User({
-    required this.userId,
+    required this.id,
     required this.email,
     required this.fullName,
     this.passwordHashCode,
@@ -27,7 +27,7 @@ class User extends Equatable {
 
   @override
   List<Object?> get props => [
-        userId,
+        id,
         email,
         fullName,
         passwordHashCode,
