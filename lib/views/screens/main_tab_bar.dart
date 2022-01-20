@@ -9,19 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainTabBar extends StatefulWidget {
-  const MainTabBar({ Key? key }) : super(key: key);
+  const MainTabBar({Key? key}) : super(key: key);
 
   @override
   _MainTabBarState createState() => _MainTabBarState();
 }
 
-class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateMixin{
-
+class _MainTabBarState extends State<MainTabBar>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late TabController _tabController;
   late List<Widget> _myTabs;
   int _currentTab = 0;
-
 
   @override
   void initState() {
@@ -63,9 +62,7 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
             _buildTabBarItem(2, 'Tải lên', Icons.book),
             _buildTabBarItem(3, 'Cá nhân', Icons.person),
           ],
-          onTap: (index) {
-            
-          },
+          onTap: (index) {},
         ),
       ),
       body: Stack(
@@ -80,33 +77,21 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
               ProfileTab(),
             ],
           ),
-          // ClipRect(
-          //   child: BackdropFilter(
-          //     filter: ImageFilter.blur(
-          //       sigmaX: 10,
-          //       sigmaY: 10,
-          //     ),
-          //     child: Container(
-          //       height: 60,
-          //       color: Colors.black.withOpacity(0),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
   }
 
-  _buildTabBarItem(
-      int tabIndex, String title, IconData ic) {
+  _buildTabBarItem(int tabIndex, String title, IconData ic) {
     return Tab(
       child: Column(
         children: [
           SizedBox(height: tabIndex == _currentTab ? 2 : 4),
           Icon(
             ic,
-            color: tabIndex == _currentTab ? Color.fromRGBO(61, 50, 112, 1) 
-              : Color.fromRGBO(139, 151, 168, 1),
+            color: tabIndex == _currentTab
+                ? Color.fromRGBO(61, 50, 112, 1)
+                : Color.fromRGBO(139, 151, 168, 1),
             size: tabIndex == _currentTab ? 24 : 20,
           ),
           SizedBox(height: tabIndex == _currentTab ? 2 : 4),
@@ -121,16 +106,6 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
                 color: tabIndex != _currentTab
                     ? Color.fromRGBO(139, 151, 168, 1)
                     : Color.fromRGBO(61, 50, 112, 1),
-                // shadows: <Shadow>[
-                //   Shadow(
-                //     blurRadius: 20.0,
-                //     color: tabIndex != _currentTab
-                //         ? Color.fromRGBO(139, 151, 168, 1)
-                //         : _currentTab == 0 || _currentTab == 3
-                //             ? Color.fromRGBO(2, 255, 196, 1)
-                //             : Color.fromRGBO(254, 44, 146, 1),
-                //   ),
-                // ],
               ),
             ),
           ),

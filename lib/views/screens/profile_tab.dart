@@ -1,43 +1,53 @@
+import 'package:flashare/controller/profile_controller.dart';
+import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTab extends StatefulWidget {
-  const ProfileTab({ Key? key }) : super(key: key);
+  const ProfileTab({Key? key}) : super(key: key);
 
   @override
   _ProfileTabState createState() => _ProfileTabState();
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  var data;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 60, 20, 60),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: Text(
-                  'Thông tin của tôi',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return FutureBuilder(
+        future: data = ProfileController().getProfile(),
+        builder: (context, snap) {
+          if (data == null || data[0] == null || data[0] == false) {
+            return const CircularProgressIndicator();
+          }
+          return Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 60, 20, 60),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        'Thông tin của tôi',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    _renderProfile(),
+                    SizedBox(height: 24),
+                    _renderInformation(),
+                    SizedBox(height: 24),
+                    _renderSetting(),
+                  ],
                 ),
               ),
-              SizedBox(height: 24),
-              _renderProfile(),
-              SizedBox(height: 24),
-              _renderInformation(),
-              SizedBox(height: 24),
-              _renderSetting(),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   Widget _renderProfile() {
@@ -45,7 +55,8 @@ class _ProfileTabState extends State<ProfileTab> {
       child: Row(
         children: [
           AvatarCircle(
-            imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg', 
+            imgUrl:
+                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
             radius: 60,
           ),
           SizedBox(width: 24),
@@ -58,13 +69,17 @@ class _ProfileTabState extends State<ProfileTab> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               SizedBox(height: 12),
-              Text('Quản trị viên',
+              Text(
+                'Quản trị viên',
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 12),
               Row(
                 children: List.generate(5, (index) {
-                  return Icon(Icons.star, color: Colors.yellow,);
+                  return Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  );
                 }),
               ),
               SizedBox(height: 12),
@@ -158,7 +173,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
-            onPressed: (){},
+            onPressed: () {},
             icon: Icons.person,
             action: 'Thay đổi thông tin cá nhân',
             color: Colors.white,
@@ -166,7 +181,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
-            onPressed: (){
+            onPressed: () {
               Navigator.pushNamed(context, '/change_password');
             },
             icon: Icons.security,
@@ -176,7 +191,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
-            onPressed: (){
+            onPressed: () {
               Navigator.pushNamed(context, '/my_request');
             },
             icon: Icons.storage,
@@ -186,7 +201,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
             },
             icon: Icons.exit_to_app,
