@@ -18,19 +18,19 @@ class _HomeState extends State<Home> {
     //   "Van Do"
     // },
     {
-      "https://scontent.fvca1-4.fna.fbcdn.net/v/t1.6435-9/155406591_2912083059027039_264416715502496679_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=T9LyKfwkzsMAX_zF60o&_nc_ht=scontent.fvca1-4.fna&oh=00_AT8OjsFeFpDtaLe5fI-tUV3ibU647WzmWaHsVSIlvOTTKQ&oe=61E2DE90",
+      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
       "Ha Minh"
     },
     {
-      "https://scontent.fvca1-2.fna.fbcdn.net/v/t1.18169-9/14141944_301260170232647_3817991168521306987_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=19026a&_nc_ohc=FGkNHzQw2IoAX9hRcuc&_nc_ht=scontent.fvca1-2.fna&oh=00_AT-f56rZr_TcdQZdXvODgD4ArXpkYln3ltfJvY5zam1nxA&oe=61E3939F",
+      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
       "Duc Tu"
     },
     {
-      "https://scontent.fvca1-4.fna.fbcdn.net/v/t1.6435-9/130476944_1539815723072679_109374608196100940_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=PhbSvRxxhO4AX9_hniI&_nc_oc=AQlZ2xKkItxkaIP9x3uHWxcQFVxanoUwBIAv7o_rYNU9EmSF8RYJ-NkaILNv_dVhDpC7iaQ1N-2NNa9oMVg4I4Vm&_nc_ht=scontent.fvca1-4.fna&oh=00_AT9d01j6JrOMuNS7h2PYl2YQoiooXDqPuesGUEOA2S4D0g&oe=61E124BD",
+      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
       "Xuan Dang"
     },
     {
-      "https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-9/49673937_426082511263686_5771748065077624832_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=ad2b24&_nc_ohc=FRtEeRwlDOAAX-7Zamo&_nc_ht=scontent.fvca1-3.fna&oh=00_AT-jZWZJx2I6AXCqA0IUDdC9w34V65mP35i2wb9HC_hu7g&oe=61E41718",
+      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
       "Trung Hieu"
     }
   ];

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flashare/utils/user_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class AuthenticationController {
-  Future<dynamic> ChangePassword({required String id, required String oldPassword, required String newPassword,}) async {
+  Future<List> changePassword({required String oldPassword, required String newPassword,}) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
     var json = jsonEncode({"id": id, "old_password": oldPassword, "new_password": newPassword,});
     print(json);
     

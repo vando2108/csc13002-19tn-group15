@@ -1,5 +1,5 @@
 import 'package:flashare/controller/profile_controller.dart';
-import 'package:flashare/utils/user_storage.dart';
+import 'package:flashare/models/user.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +12,24 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  var data;
+  late Future<User> data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = ProfileController().getProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: data = ProfileController().getProfile(),
+    return FutureBuilder<User>(
+        future: data,
         builder: (context, snap) {
-          if (data == null || data[0] == null || data[0] == false) {
-            return const CircularProgressIndicator();
+          if (!snap.hasData) {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            ));
           }
           return Scaffold(
             body: Padding(
@@ -37,9 +47,16 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                     SizedBox(height: 24),
-                    _renderProfile(),
+                    _renderProfile(
+                      avatar: snap.data!.avatarLink,
+                      fullName: snap.data!.Name,
+                    ),
                     SizedBox(height: 24),
-                    _renderInformation(),
+                    _renderInformation(
+                      email: snap.data!.Email,
+                      phoneNumber: snap.data!.phoneNumber,
+                      address: snap.data!.address,
+                    ),
                     SizedBox(height: 24),
                     _renderSetting(),
                   ],
@@ -50,12 +67,15 @@ class _ProfileTabState extends State<ProfileTab> {
         });
   }
 
-  Widget _renderProfile() {
+  Widget _renderProfile({
+    String? avatar,
+    String? fullName,
+  }) {
     return Container(
       child: Row(
         children: [
           AvatarCircle(
-            imgUrl:
+            imgUrl: avatar ??
                 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
             radius: 60,
           ),
@@ -65,13 +85,8 @@ class _ProfileTabState extends State<ProfileTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ronaldo',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Quản trị viên',
-                style: TextStyle(fontSize: 14),
+                fullName ?? 'Ronaldo',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               SizedBox(height: 12),
               Row(
@@ -103,7 +118,8 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Widget _renderInformation() {
+  Widget _renderInformation(
+      {String? email, String? phoneNumber, String? address}) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +137,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Icon(Icons.mail_outline),
               SizedBox(width: 12),
               Text(
-                'trunghieuronaldo@gmail.com',
+                email ?? 'trunghieuronaldo@gmail.com',
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -134,7 +150,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Icon(Icons.phone, color: Colors.black),
               SizedBox(width: 12),
               Text(
-                '6969696969',
+                phoneNumber ?? '6969696969',
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -147,7 +163,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Icon(CupertinoIcons.location, color: Colors.black),
               SizedBox(width: 12),
               Text(
-                '227 Đ.Nguyễn Văn Cừ, Phường 4, Q.5, TP.HCM',
+                address ?? '227 Đ.Nguyễn Văn Cừ, Phường 4, Q.5, TP.HCM',
                 style: TextStyle(
                   fontSize: 12,
                 ),
