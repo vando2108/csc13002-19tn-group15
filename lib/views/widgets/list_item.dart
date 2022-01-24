@@ -30,6 +30,7 @@ class _ListItemState extends State<ListItem> {
           if (temp[index]["photos_link"].length > 0) {
             imgPath = temp[index]["photos_link"][0];
           }
+          DateTime date = DateTime.parse(temp[index]["due_date"].toString());
           return ItemCard(
               onClick: () {
                 Item item = Item.fromJson(temp[index]);
@@ -39,7 +40,7 @@ class _ListItemState extends State<ListItem> {
               },
               imgPath: imgPath,
               title: temp[index]["title"].toString(),
-              dueDate: temp[index]["dueDate"].toString());
+              dueDate: date.day.toString() + "-" + date.month.toString() + "-" + date.year.toString());
         },
       ),
     );

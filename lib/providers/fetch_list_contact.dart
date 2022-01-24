@@ -44,7 +44,7 @@ Future<ApiResponse> FetchListContact() async {
   try {
     http.Response response = await http.get(
         Uri.parse(
-            "http://" + dotenv.env["HOST"].toString() + "/api/message/get-contacts?uid=" + uid),
+            "http://" + dotenv.env["DOMAIN"].toString() + "/api/message/get-contacts?uid=" + uid),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });

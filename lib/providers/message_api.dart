@@ -9,7 +9,7 @@ Future<ApiResponse> FetchListMessage(String user1, String user2) async {
   try {
     http.Response response = await http.get(
         Uri.parse(
-            "http://" + dotenv.env["HOST"].toString() + "/api/message/fetch-between?user1=" + user1 + "&user2=" + user2),
+            "http://" + dotenv.env["DOMAIN"].toString() + "/api/message/fetch-between?user1=" + user1 + "&user2=" + user2),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
