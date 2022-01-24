@@ -1,4 +1,9 @@
+import 'dart:async';
+
+import 'package:flashare/models/api.dart';
+import 'package:flashare/providers/fetch_item_random.dart';
 import 'package:flashare/views/components/home_header.dart';
+import 'package:flashare/views/screens/home/list_item_category.dart';
 import 'package:flashare/views/widgets/announce.dart';
 import 'package:flashare/views/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -11,26 +16,38 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Timer? timer;
+  Future<ApiResponse>? list_item_;
   var _index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      if (mounted) {
+        setState(() {
+          list_item_ = FetchRandomItem();
+        });
+      }
+    });
+  }
+
   final _top_contributor = [
-    // {
-    //   "https://scontent.fvca1-1.fna.fbcdn.net/v/t1.6435-9/71286345_2193084204317518_881016848903045120_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=wdrPbAJTs4kAX9p6z3s&_nc_ht=scontent.fvca1-1.fna&oh=00_AT8cvEbewS_s-1WCcPYzsmZc6ziJh2eW_4bNUwljvL792w&oe=61E0F54F",
-    //   "Van Do"
-    // },
     {
-      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Ha Minh"
     },
     {
-      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Duc Tu"
     },
     {
-      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Xuan Dang"
     },
     {
-      "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Trung Hieu"
     }
   ];
@@ -41,7 +58,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 40,
@@ -67,18 +83,22 @@ class _HomeState extends State<Home> {
               CategorieCard(
                 iconPath: "assets/fork.png",
                 title: "Food",
+                category: "food",
               ),
               CategorieCard(
                 iconPath: "assets/tshirt.png",
                 title: "Clothes",
+                category: "clothes",
               ),
               CategorieCard(
                 iconPath: "assets/electronics.png",
                 title: "Houseware",
+                category: "houseware",
               ),
               CategorieCard(
                 iconPath: "assets/more.png",
                 title: "More",
+                category: "all",
               ),
             ],
           ),
@@ -86,7 +106,24 @@ class _HomeState extends State<Home> {
             height: 15,
           ),
           GroupText("Item"),
-          const ListItem(),
+          FutureBuilder(
+            future: list_item_,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ApiResponse temp = snapshot.data as ApiResponse;
+                if (temp.Sucess == false) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                timer!.cancel();
+                return Container(
+                    height: 220,
+                    child: ListItem(
+                      list_item: temp.Data,
+                    ));
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
           GroupText("Top Contributor"),
           const SizedBox(
             height: 15,
@@ -185,45 +222,57 @@ class CategorieCard extends StatelessWidget {
     Key? key,
     required this.iconPath,
     required this.title,
+    required this.category,
   }) : super(key: key);
 
   final String iconPath;
   final String title;
+  final String category;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          width: 55,
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: const Color(0xfff4b400).withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Image.asset(
-                    iconPath,
-                    color: const Color(
-                      0xffBA8900,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ListItemByCategory(
+            category: category,
+          );
+        }));
+      },
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            width: 55,
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: const Color(0xfff4b400).withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Image.asset(
+                      iconPath,
+                      color: const Color(
+                        0xffBA8900,
+                      ),
+                      scale: 0.9,
                     ),
-                    scale: 0.9,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 9))
-            ],
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 9))
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

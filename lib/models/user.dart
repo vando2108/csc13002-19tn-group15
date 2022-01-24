@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -27,7 +28,7 @@ class User {
     try {
       String domain = dotenv.get('DOMAIN');
       http.Response response = await http.post(
-          Uri.parse("$domain/api/user/auth/sign-up"),
+          Uri.parse("http://$domain/api/user/auth/sign-up"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -44,7 +45,7 @@ class User {
     try {
       String domain = dotenv.get('DOMAIN');
       http.Response response = await http.post(
-          Uri.parse("$domain/api/user/auth/sign-in"),
+          Uri.parse("http://$domain/api/user/auth/sign-in"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
