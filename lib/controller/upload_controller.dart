@@ -31,12 +31,21 @@ class UploadController {
     required DateTime dueDate,
   }) async {
     String id = await SecureStorage.readSecureData(SecureStorage.userID);
-    print(dueDate);
+    // print(dueDate.toUtc());
+    DateTime now = DateTime.now();
+
+    String dateTime = dueDate.toIso8601String() +
+        "+0" +
+        now.timeZoneOffset.inHours.toString() +
+        ":00";
+    // 2022-01-20T23:09:14.000000+07:00
+    print(dateTime);
     var json = jsonEncode({
       "title": name,
       "category": category,
       "description": description,
-      "due_date": dueDate.toIso8601String(),
+      "due_date": dateTime,
+      // "due_date": dueDate.toUtc(),
       "uploaded_by": id,
       "photos_base64": photosBase64,
     });
