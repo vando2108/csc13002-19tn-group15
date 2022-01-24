@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 
 Future<ApiResponse> FetchItemByCategory(String category) async {
   try {
-    String url =
-        "http://" + dotenv.env["DOMAIN"].toString() + "/api/item/fetch?category=" + category;
+    String url = "http://" +
+        dotenv.env["DOMAIN"].toString() +
+        "/api/item/fetch?category";
+    if (category != "all") url = url + "=" + category;
 
     http.Response response =
         await http.get(Uri.parse(url), headers: <String, String>{
