@@ -1,6 +1,6 @@
 class ApiResponse {
   final Sucess;
-  final List Data;
+  final Data;
 
   ApiResponse(this.Sucess, this.Data);
 }
