@@ -6,17 +6,16 @@ import 'package:http/http.dart' as http;
 String domain = dotenv.get('DOMAIN');
 
 class UploadController {
-  Future<dynamic> getItemUpload({required String id}) async {
-    var json = jsonEncode({"id": id});
-    print(json);
+  Future<List> getItemUpload() async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
 
     try {
-      http.Response response = await http.post(
-          Uri.parse("http://localhost:8080/api/user/profile/change-password"),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: json);
+      http.Response response = await http.get(
+        Uri.parse("http://$domain/api/item/fetch-uploaded-by?uid=$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];
     } on Exception catch (_) {
@@ -51,6 +50,102 @@ class UploadController {
               },
               body: json);
       var body = jsonDecode(response.body);
+      return [body["success"], body["data"]];
+    } on Exception catch (_) {
+      return [false, "Can't connect to server"];
+    }
+  }
+
+  Future<List> getListRequest({
+    required String itemId,
+  }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    var json = jsonEncode({
+      'item_id': itemId,
+    });
+    print(json);
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse("http://$domain/api/request/get-item-request"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json);
+      var body = jsonDecode(response.body);
+      if (body['data'] == null) body['data'] = [];
+      return [body["success"], body["data"]];
+    } on Exception catch (_) {
+      return [false, "Can't connect to server"];
+    }
+  }
+
+  Future<List> acceptRequest({
+    required String requestId,
+  }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    var json = jsonEncode({
+      'request_id': requestId,
+    });
+    print(json);
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse("http://$domain/api/request/accept-request"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json);
+      var body = jsonDecode(response.body);
+      if (body['data'] == null) body['data'] = [];
+      return [body["success"], body["data"]];
+    } on Exception catch (_) {
+      return [false, "Can't connect to server"];
+    }
+  }
+
+  Future<List> cancelRequest({
+    required String requestId,
+  }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    var json = jsonEncode({
+      'request_id': requestId,
+    });
+    print(json);
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse("http://$domain/api/request/cancel-request"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json);
+      var body = jsonDecode(response.body);
+      if (body['data'] == null) body['data'] = [];
+      return [body["success"], body["data"]];
+    } on Exception catch (_) {
+      return [false, "Can't connect to server"];
+    }
+  }
+
+  Future<List> markItemAsSent({
+    required String itemId,
+  }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    var json = jsonEncode({
+      'item_id': itemId,
+    });
+    print(json);
+
+    try {
+      http.Response response =
+          await http.post(Uri.parse("http://$domain/api/request/archieve-item"),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: json);
+      var body = jsonDecode(response.body);
+      if (body['data'] == null) body['data'] = [];
       return [body["success"], body["data"]];
     } on Exception catch (_) {
       return [false, "Can't connect to server"];

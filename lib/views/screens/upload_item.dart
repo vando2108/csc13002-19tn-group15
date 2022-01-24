@@ -89,9 +89,12 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         onPressed: () async {
+          String category = "clothes";
+          if (dropdownValue == "Đồ gia dụng") category = "houseware";
+          if (dropdownValue == "Thức ăn") category = "food";
           List response = await UploadController().uploadItem(
             name: _nameText.text,
-            category: dropdownValue,
+            category: category,
             photosBase64: [_base64Image],
             description: _descriptionText.text,
             dueDate: selectedDate,

@@ -1,47 +1,53 @@
 import 'dart:convert';
+import 'package:flashare/utils/user_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+String domain = dotenv.get('DOMAIN');
+
 class RequestController {
-  Future<dynamic> getRequest({
-    required String id,
-  }) async {
+  Future<List> getRequestPending() async {
     try {
+      String id = await SecureStorage.readSecureData(SecureStorage.userID);
+      var json = jsonEncode({"user_id": id});
       http.Response response = await http.post(
-        Uri.parse(""),  // TODO: API GET MY REQUEST
+        Uri.parse("http://$domain/api/request/get-pending"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: json,
       );
       var body = jsonDecode(response.body);
-      return [body["success"], body["data"]];
-    } on Exception catch (_) {
+      print('---------------data pending---------');
+      print(body['success']);
+      print(body['data']);
+      if (body['data'] == null) body['data'] = [];
+      List data = [body["success"], body["data"]];
+      return data;
+    } catch (e) {
       return [false, "Can't connect to server"];
     }
   }
 
-  Future<dynamic> addReview({
-    required String senderId,
-    required String receiverId,
-    required double rate,
-    required String review,
-  }) async {
-    var json = jsonEncode({
-      "sender": senderId,
-      "receiver": receiverId,
-      "rate": rate,
-      "review": review,
-    });
-    print(json);
+  Future<List> getRequestArchived() async {
     try {
+      String id = await SecureStorage.readSecureData(SecureStorage.userID);
+      var json = jsonEncode({"user_id": id});
       http.Response response = await http.post(
-        Uri.parse(""), // TODO: API add reviews
+        Uri.parse("http://$domain/api/request/get-archieved"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-        }, body: json,
+        },
+        body: json,
       );
       var body = jsonDecode(response.body);
-      return [body["success"], body["data"]];
-    } on Exception catch (_) {
+      print('--------data archived------');
+      print(body['success']);
+      print(body['data']);
+      if (body['data'] == null) body['data'] = [];
+      List data = [body["success"], body["data"]];
+      return data;
+    } catch (_) {
       return [false, "Can't connect to server"];
     }
   }

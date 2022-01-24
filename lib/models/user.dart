@@ -13,12 +13,16 @@ class User {
   final String? address;
   final double? rate;
 
-  User(
-      {required this.ID,
-      required this.Name,
-      required this.Email,
-      required this.Password,
-       this.avatarLink, this.address, this.phoneNumber, this.rate,});
+  User({
+    required this.ID,
+    required this.Name,
+    required this.Email,
+    required this.Password,
+    this.avatarLink,
+    this.address,
+    this.phoneNumber,
+    this.rate,
+  });
 
   // ignore: non_constant_identifier_names
   Future<List> SignUp() async {
@@ -26,12 +30,12 @@ class User {
         jsonEncode({'full_name': Name, 'email': Email, 'password': Password});
     try {
       String domain = dotenv.get('DOMAIN');
-      http.Response response = await http.post(
-          Uri.parse("$domain/api/user/auth/sign-up"),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: json);
+      http.Response response =
+          await http.post(Uri.parse("http://$domain/api/user/auth/sign-up"),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: json);
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];
     } on Exception catch (_) {
@@ -43,12 +47,12 @@ class User {
     var json = jsonEncode({'email': Email, 'password': Password});
     try {
       String domain = dotenv.get('DOMAIN');
-      http.Response response = await http.post(
-          Uri.parse("$domain/api/user/auth/sign-in"),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: json);
+      http.Response response =
+          await http.post(Uri.parse("http://$domain/api/user/auth/sign-in"),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: json);
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];
     } on Exception catch (_) {

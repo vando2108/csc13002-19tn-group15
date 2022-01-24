@@ -1,13 +1,15 @@
+import 'package:flashare/controller/upload_controller.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ItemRequestScreen extends StatefulWidget {
+  final String itemId;
   final String itemUrl;
   final String category;
   final String itemName;
   const ItemRequestScreen(
-      {Key? key,
+      {Key? key, required this.itemId,
       required this.itemUrl,
       required this.category,
       required this.itemName})
@@ -18,6 +20,7 @@ class ItemRequestScreen extends StatefulWidget {
 }
 
 class _ItemRequestScreenState extends State<ItemRequestScreen> {
+  late Future<List> response; 
   List<String> urlImage = [
     'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
@@ -28,6 +31,13 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
     'Ronaldo',
     'CR7',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    response = UploadController().getListRequest(itemId: widget.itemId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

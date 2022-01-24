@@ -1,3 +1,4 @@
+import 'package:flashare/views/screens/other_profile.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flashare/views/widgets/image_border.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ class ItemRequestBox extends StatelessWidget {
   final String description;
   final String imgUser;
   final String nameUser;
+  final String userId;
+  final String itemId;
   final Function()? onTap;
 
   const ItemRequestBox({
@@ -20,6 +23,8 @@ class ItemRequestBox extends StatelessWidget {
     required this.name,
     required this.imgUser,
     required this.nameUser,
+    required this.userId,
+    required this.itemId,
     this.onTap,
   }) : super(key: key);
 
@@ -72,19 +77,29 @@ class ItemRequestBox extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        AvatarCircle(imgUrl: imgUser, radius: 12),
-                        SizedBox(width: 8),
-                        Text(
-                          nameUser,
-                          style: TextStyle(
-                            fontSize: 12,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OtherProfileScreen(userId: userId)),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AvatarCircle(imgUrl: imgUser, radius: 12),
+                          SizedBox(width: 8),
+                          Text(
+                            nameUser,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 24)
-                      ],
+                          SizedBox(width: 24)
+                        ],
+                      ),
                     ),
                   ],
                 ),
