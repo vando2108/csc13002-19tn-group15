@@ -1,4 +1,3 @@
-import 'package:flashare/controller/upload_controller.dart';
 import 'package:flashare/views/widgets/app_size.dart';
 import 'package:flashare/views/widgets/item_posted_box.dart';
 import 'package:flashare/views/widgets/item_request_box.dart';
@@ -16,21 +15,17 @@ class _UploadTabState extends State<UploadTab>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentTab = 0;
-  late Future<List> dataItem;
-  List itemOpen = [];
-  List itemClosed = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this);
     _tabController.index = _currentTab;
     _tabController.addListener(() {
       this.setState(() {
         _currentTab = _tabController.index;
       });
     });
-    dataItem = UploadController().getItemUpload();
   }
 
   @override
@@ -43,7 +38,7 @@ class _UploadTabState extends State<UploadTab>
   Widget build(BuildContext context) {
     AppSize.config(context);
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 0),
         child: Scaffold(
@@ -61,6 +56,7 @@ class _UploadTabState extends State<UploadTab>
                       const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
                     Tab(text: 'Đã đăng'),
+                    Tab(text: 'Đang giao'),
                     Tab(text: 'Đã gửi'),
                   ],
                 ),
@@ -68,6 +64,7 @@ class _UploadTabState extends State<UploadTab>
                 Expanded(
                   child: TabBarView(controller: _tabController, children: [
                     _postedView(),
+                    _inProgressView(),
                     _sentView(),
                   ]),
                 ),
@@ -85,9 +82,9 @@ class _UploadTabState extends State<UploadTab>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-            hintText: "Tìm kiếm",
-            icon: Icons.search,
-            onChanged: (value) {},
+              hintText: "Tìm kiếm", 
+              icon: Icons.search,
+              onChanged: (value){},
           ),
         ],
       ),
@@ -95,132 +92,161 @@ class _UploadTabState extends State<UploadTab>
   }
 
   Widget _postedView() {
-    return FutureBuilder(
-        future: dataItem,
-        builder: (context, snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            );
-          }
-          List response = snap.data! as List;
-          print(response);
-          if (response[0] == false) {
-            return Center(
-              child: Text(response[1]),
-            );
-          }
-          List item = response[1];
-          itemOpen = [];
-          item.forEach((element) {
-            if (element['item']['status'] == 'open') itemOpen.add(element);
-          });
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/upload_item');
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ItemPostedBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              dueDate: 3,
+            ),
+            SizedBox(height: 12),
+            ItemPostedBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              dueDate: 3,
+            ),
+            SizedBox(height: 12),
+            ItemPostedBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              dueDate: 3,
+            ),
+            SizedBox(height: 12),
+            ItemPostedBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              dueDate: 3,
+            ),
+            SizedBox(height: 12),
+            ItemPostedBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              dueDate: 3,
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
 
-          return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/upload_item');
-              },
-              backgroundColor: Colors.blue,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
+  Widget _inProgressView() {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: List.generate(itemOpen.length, (index) {
-                  var it = itemOpen[index]['item'];
-                  var requester = itemOpen[index]['requester'];
-                  return Column(
-                    children: [
-                      requester == null
-                          ? ItemPostedBox(
-                              imgUrl: it['photos_link'][0],
-                              category: it['category'],
-                              description: it['description'],
-                              name: it['title'],
-                              dueDate: 3,
-                              itemId: it['id'],
-                            )
-                          : ItemRequestBox(
-                              imgUrl: it['photos_link'][0],
-                              category: it['category'],
-                              name: it['title'],
-                              description: it['description'],
-                              nameUser: requester['name'],
-                              userId: requester['id'],
-                              imgUser: requester['avatar_link'],
-                              itemId: it['id'],
-                            ),
-                      SizedBox(height: 12),
-                    ],
-                  );
-                }),
-              ),
+            SizedBox(height: 12),
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
             ),
-          );
-        });
+            SizedBox(height: 12),
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _sentView() {
-    return FutureBuilder(
-        future: dataItem,
-        builder: (context, snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            );
-          }
-          List response = snap.data! as List;
-          if (response[0] == false) {
-            return Center(
-              child: Text(response[1]),
-            );
-          }
-          List item = response[1];
-          itemClosed = [];
-          item.forEach((element) {
-            if (element['item']['status'] == 'closed') itemClosed.add(element);
-          });
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: List.generate(itemClosed.length, (index) {
-                  var it = itemClosed[index]['item'];
-                  var requester = itemClosed[index]['requester'];
-                  return Column(
-                    children: [
-                      requester == null
-                          ? ItemPostedBox(
-                              imgUrl: it['photos_link'][0],
-                              category: it['category'],
-                              description: it['description'],
-                              name: it['title'],
-                              dueDate: 3,
-                              itemId: it['id'],
-                            )
-                          : ItemRequestBox(
-                              imgUrl: it['photos_link'][0],
-                              category: it['category'],
-                              name: it['title'],
-                              description: it['description'],
-                              nameUser: requester['name'],
-                              userId: requester['id'],
-                              imgUser: requester['avatar_link'],
-                              itemId: it['id'],
-                            ),
-                      SizedBox(height: 12),
-                    ],
-                  );
-                }),
-              ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
             ),
-          );
-        });
+            SizedBox(height: 12),
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
+            ),
+            SizedBox(height: 12),
+            ItemRequestBox(
+              imgUrl:
+                  'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+              category: 'Thời trang',
+              description:
+                  'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+              name: 'Áo khoác',
+              imgUser: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+              nameUser: 'Cristiano Ronaldo',
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 }

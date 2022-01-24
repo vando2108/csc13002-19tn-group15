@@ -7,12 +7,11 @@ import 'package:http/http.dart' as http;
 String domain = dotenv.get('DOMAIN');
 
 class ProfileController {
-  Future<User> getProfile({String? userId}) async {
+  Future<User> getProfile() async {
     try {
       String id = await SecureStorage.readSecureData(SecureStorage.userID);
-      if (userId != null) id = userId;
       http.Response response = await http.get(
-        Uri.parse("http://$domain/api/user/profile/get/$id"),
+        Uri.parse("$domain/api/user/profile/get/$id"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

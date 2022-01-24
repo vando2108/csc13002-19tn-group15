@@ -1,24 +1,17 @@
-import 'package:flashare/controller/review_controller.dart';
-import 'package:flashare/models/user.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddReviewScreen extends StatefulWidget {
-  final User sender;
-  const AddReviewScreen({Key? key, required this.sender}) : super(key: key);
+  const AddReviewScreen({Key? key}) : super(key: key);
 
   @override
   _AddReviewScreenState createState() => _AddReviewScreenState();
 }
 
 class _AddReviewScreenState extends State<AddReviewScreen> {
-  var _textController = new TextEditingController();
-  List<bool> star = [false, false, false, false, false];
-  int _rate = 0;
   @override
   Widget build(BuildContext context) {
-    User sender = widget.sender;
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 60, horizontal: 30),
@@ -48,13 +41,13 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AvatarCircle(
-                    imgUrl: sender.avatarLink ??
+                    imgUrl:
                         'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
                     radius: 36,
                   ),
                   SizedBox(width: 20),
                   Text(
-                    sender.Name,
+                    'CR7',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -67,16 +60,8 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 child: Row(
                   children: List.generate(5, (index) {
                     return GestureDetector(
-                      onTap: () {
-                        _rate = index + 1;
-                        setState(() {
-                          for (int i = 0; i < 5; ++i) {
-                            star[i] = i <= index ? true : false;
-                          }
-                        });
-                      },
-                      child: Icon(Icons.star,
-                          color: star[index] ? Colors.yellow : null),
+                      onTap: () {},
+                      child: Icon(Icons.star, color: Colors.yellow),
                     );
                   }),
                 ),
@@ -106,7 +91,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
         onChanged: (value) {
           print(value);
         },
-        controller: _textController,
         decoration: InputDecoration(
           hintText: 'Đánh giá',
           border: InputBorder.none,
@@ -126,18 +110,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        onPressed: () async {
-          List response = await ReviewController().addReview(
-            receiver: widget.sender.ID,
-            rate: _rate,
-            review: _textController.toString(),
-          );
-          if (response[0] == false) {
-            _showDialog(message: response[1]);
-          } else {
-            _showDialog(message: "Thêm đánh giá thành công.");
-          }
-        },
+        onPressed: () {},
         child: Text(
           'Đăng',
           style: TextStyle(
@@ -148,22 +121,5 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
         ),
       ),
     );
-  }
-
-  _showDialog({required String message}) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text(message),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Close"))
-            ],
-          );
-        });
   }
 }

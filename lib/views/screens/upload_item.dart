@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flashare/controller/upload_controller.dart';
 import 'package:flashare/views/widgets/app_size.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,12 +17,9 @@ class UploadItemScreen extends StatefulWidget {
 class _UploadItemScreenState extends State<UploadItemScreen> {
   List<String> categories = ['Áo quần', 'Đồ gia dụng', 'Thức ăn'];
   String dropdownValue = 'Áo quần';
-  XFile? _image;
+  File? _image;
   final ImagePicker _picker = ImagePicker();
   DateTime selectedDate = DateTime.now();
-  String _base64Image = "";
-  var _nameText = new TextEditingController();
-  var _descriptionText = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +53,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               RoundedInputField(
                 hintText: 'Tên vật phẩm',
                 icon: Icons.food_bank,
-                controller: _nameText,
               ),
               const SizedBox(height: 36),
               _categoryBox(),
@@ -88,24 +82,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        onPressed: () async {
-          String category = "clothes";
-          if (dropdownValue == "Đồ gia dụng") category = "houseware";
-          if (dropdownValue == "Thức ăn") category = "food";
-          List response = await UploadController().uploadItem(
-            name: _nameText.text,
-            category: category,
-            photosBase64: [_base64Image],
-            description: _descriptionText.text,
-            dueDate: selectedDate,
-          );
-
-          if (response[0] == false) {
-            _showDialog(message: response[1]);
-          } else {
-            _showDialog(message: "Tải lên vật phẩm thành công.");
-          }
-        },
+        onPressed: () {},
         child: Text(
           'Tải lên',
           style: TextStyle(
@@ -176,7 +153,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           hintText: 'Mô tả',
           border: InputBorder.none,
         ),
-        controller: _descriptionText,
       ),
     );
   }
@@ -192,7 +168,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.file(
-                    File(_image!.path),
+                    _image!,
                     height: 100,
                     width: 100,
                     fit: BoxFit.fitHeight,
@@ -227,7 +203,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                   title: new Text('Ảnh từ thư viện'),
                   onTap: () {
                     _imgFromGallery();
-                    // Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                 ),
                 new ListTile(
@@ -247,23 +223,18 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   }
 
   _imgFromCamera() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
-    List<int> imageBytes = await image!.readAsBytes();
-    _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
+    final File image = await (_picker.pickImage(
+        source: ImageSource.camera, imageQuality: 50)) as File;
     setState(() {
       _image = image;
     });
   }
 
   _imgFromGallery() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-    List<int> imageBytes = await File(image!.path).readAsBytes();
-    _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
+    final File image = await (_picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50)) as File;
     setState(() {
       _image = image;
-      print(_base64Image);
     });
   }
 
@@ -298,22 +269,5 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         ],
       ),
     );
-  }
-
-  _showDialog({required String message}) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text(message),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Close"))
-            ],
-          );
-        });
   }
 }

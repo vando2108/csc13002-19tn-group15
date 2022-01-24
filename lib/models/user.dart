@@ -6,14 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class User {
-  final String ID;
-  final String Name;
-  final String Email;
-  final String Password;
-  final String? avatarLink;
-  final String? phoneNumber;
-  final String? address;
-  final double? rate;
+  late String ID;
+  late String Name;
+  late String Email;
+  late String Password;
+  late String? avatarLink;
+  late String? phoneNumber;
+  late String? address;
+  late double? rate;
 
   User({
     required this.ID,
@@ -25,6 +25,16 @@ class User {
     this.phoneNumber,
     this.rate,
   });
+
+  User.fromJson(Map<String, dynamic> json)
+      : ID = json["id"].toString(),
+        Name = json["full_name"],
+        Email = json["email"],
+        Password = json["password_hash_code"],
+        avatarLink = json["avatar_link"],
+        phoneNumber = json["phone_number"],
+        address = json["address"],
+        rate = json["rate"];
 
   // ignore: non_constant_identifier_names
   Future<List> SignUp() async {

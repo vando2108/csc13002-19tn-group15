@@ -58,7 +58,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       address: snap.data!.address,
                     ),
                     SizedBox(height: 24),
-                    _renderSetting(context),
+                    _renderSetting(),
                   ],
                 ),
               ),
@@ -175,7 +175,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Widget _renderSetting(BuildContext context) {
+  Widget _renderSetting() {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,8 +218,7 @@ class _ProfileTabState extends State<ProfileTab> {
           SizedBox(height: 20),
           _buttonBox(
             onPressed: () {
-              Navigator.of(context).pop();
-              // Navigator.pop(context);
+              Navigator.pop(context);
             },
             icon: Icons.exit_to_app,
             action: 'Đăng xuất',
