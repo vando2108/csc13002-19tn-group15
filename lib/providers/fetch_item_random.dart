@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 Future<ApiResponse> FetchRandomItem() async {
   try {
     String url =
-        "http://" + dotenv.env["HOST"].toString() + "/api/item/fetch-random?amount=10";
+        "http://" + dotenv.env["DOMAIN"].toString() + "/api/item/fetch-random?amount=10";
 
     http.Response response =
         await http.get(Uri.parse(url), headers: <String, String>{

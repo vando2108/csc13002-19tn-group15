@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flashare/models/item.dart';
 import 'package:flashare/views/screens/item_detail.dart';
 import 'package:flutter/material.dart';

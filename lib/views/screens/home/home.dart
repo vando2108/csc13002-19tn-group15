@@ -34,10 +34,6 @@ class _HomeState extends State<Home> {
   }
 
   final _top_contributor = [
-    // {
-    //   "https://scontent.fvca1-1.fna.fbcdn.net/v/t1.6435-9/71286345_2193084204317518_881016848903045120_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=wdrPbAJTs4kAX9p6z3s&_nc_ht=scontent.fvca1-1.fna&oh=00_AT8cvEbewS_s-1WCcPYzsmZc6ziJh2eW_4bNUwljvL792w&oe=61E0F54F",
-    //   "Van Do"
-    // },
     {
       "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Ha Minh"
