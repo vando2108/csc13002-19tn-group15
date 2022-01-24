@@ -9,9 +9,11 @@ class ItemPostedBox extends StatelessWidget {
   final String name;
   final String description;
   final int dueDate;
+  final String itemId;
 
   const ItemPostedBox({
     Key? key,
+    required this.itemId,
     required this.imgUrl,
     required this.category,
     required this.description,
@@ -25,7 +27,7 @@ class ItemPostedBox extends StatelessWidget {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) { 
           return ItemRequestScreen(
-            itemUrl: imgUrl, category: category, itemName: name,
+            itemUrl: imgUrl, category: category, itemName: name, itemId: itemId,
           ); 
         }));
       },
@@ -33,9 +35,6 @@ class ItemPostedBox extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           color: Color.fromRGBO(239, 238, 238, 1),
-          // boxShadow: [
-          //   BoxShadow()
-          // ]
         ),
 
         child: Row(
