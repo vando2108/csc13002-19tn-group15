@@ -1,14 +1,14 @@
 import 'package:flashare/models/user.dart';
 import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/main_layout.dart';
-import 'package:flashare/views/screens/signup.dart';
+import 'package:flashare/views/screens/authen/signup.dart';
 import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'home.dart';
+import '../home/home.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({Key? key}) : super(key: key);
@@ -152,7 +152,6 @@ class SignIn extends StatelessWidget {
                             ID: "", Name: "", Email: email, Password: password);
 
                         List respone = await newUser.SignIn();
-                        print(respone);
                         if (respone[0] == false) {
                           showDialog(
                               context: context,

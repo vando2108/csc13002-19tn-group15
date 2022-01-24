@@ -1,64 +1,49 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flashare/models/api.dart';
+import 'package:flashare/models/message.dart';
+import 'package:flashare/providers/message_api.dart';
+import 'package:flashare/utils/user_storage.dart';
+import 'package:flashare/views/screens/chat/chat_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-class Message {
-  final String message;
-  final String senderid;
-  final String reciverid;
-
-  Message(this.message, this.senderid, this.reciverid);
-
-  Message.fromJson(Map<String, dynamic> json)
-      : message = json['message'],
-        senderid = json['senderid'],
-        reciverid = json['reciverid'];
-}
-
-class ChatTab extends StatefulWidget {
-  const ChatTab({Key? key}) : super(key: key);
-  @override
-  _ChatTabState createState() => _ChatTabState();
-}
-
-class _ChatTabState extends State<ChatTab> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () =>
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const ChatScreen();
-        })),
-        child: Text("Chat"),
-      ),
-    );
-  }
-}
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
     Key? key,
+    required this.receiver,
   }) : super(key: key);
+
+  final String receiver;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _channel =
-      WebSocketChannel.connect(Uri.parse("ws://192.168.1.8:8080/api/chat"));
-
+  late var _channel;
   List<Message> _chat = [];
   ScrollController _scrollController = new ScrollController();
+  late String userID = "";
 
-  @override
-  void initState() {
-    super.initState();
-
+  Future<void> Init() async {
+    final temp_userid =
+        await SecureStorage.readSecureData(SecureStorage.userID);
+    setState(() {
+      userID = temp_userid;
+    });
+    _channel = WebSocketChannel.connect(Uri.parse(
+        "ws://" + dotenv.env["HOST"].toString() + "/api/chat?sender=" +
+            userID +
+            "&receiver=" +
+            widget.receiver));
+    ApiResponse temp = await FetchListMessage(userID, widget.receiver);
+    for (var it in temp.Data) {
+      setState(() {
+        _chat.add(Message.fromJson(it));
+      });
+    }
     _channel.stream.listen((event) {
       var temp = jsonDecode(event);
       var msg = Message.fromJson(temp);
@@ -66,6 +51,12 @@ class _ChatScreenState extends State<ChatScreen> {
         _chat.add(msg);
       });
     });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    Init();
   }
 
   @override
@@ -97,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 controller: _scrollController,
                 itemCount: _chat.length,
                 itemBuilder: (context, index) => Center(
-                  child: MessageRender(chat: _chat[index]),
+                  child: MessageRender(chat: _chat[index], userID: userID),
                 ),
               ),
             ),
@@ -122,9 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       child: const TextField(
                         decoration: InputDecoration(
-                          hintText: "Aa",
-                          border: InputBorder.none
-                        ),
+                            hintText: "Aa", border: InputBorder.none),
                       ),
                     ),
                   ),
@@ -139,7 +128,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             duration: const Duration(microseconds: 200),
                             curve: Curves.easeOut);
                       },
-                      icon: const Icon(Icons.send, color: Colors.blue,))
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.blue,
+                      ))
                 ],
               ),
             ),
@@ -154,15 +146,17 @@ class MessageRender extends StatelessWidget {
   const MessageRender({
     Key? key,
     required chat,
+    required this.userID,
   })  : _chat = chat,
         super(key: key);
 
   final Message _chat;
+  final String userID;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: _chat.senderid == "Ha Minh"
+      mainAxisAlignment: _chat.senderid != userID
           ? MainAxisAlignment.start
           : MainAxisAlignment.end,
       children: [
@@ -172,15 +166,16 @@ class MessageRender extends StatelessWidget {
             horizontal: 20 * 0.75,
             vertical: 10,
           ),
+          width: 200,
           decoration: BoxDecoration(
-              color: _chat.senderid == "Ha Minh"
+              color: _chat.senderid != userID
                   ? const Color(0xffEFEEEE)
                   : Colors.blue,
               borderRadius: BorderRadius.circular(30)),
           child: Text(
             _chat.message,
             style: TextStyle(
-              color: _chat.senderid == "Ha Minh" ? Colors.black : Colors.white,
+              color: _chat.senderid != userID ? Colors.black : Colors.white,
             ),
           ),
         )

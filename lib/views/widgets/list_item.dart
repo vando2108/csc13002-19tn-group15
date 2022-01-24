@@ -1,39 +1,47 @@
+import 'package:flashare/models/item.dart';
 import 'package:flashare/views/screens/item_detail.dart';
 import 'package:flutter/material.dart';
 
 import 'item_card.dart';
 
-class ListItem extends StatelessWidget {
+class ListItem extends StatefulWidget {
   const ListItem({
     Key? key,
+    this.list_item,
   }) : super(key: key);
+  final list_item;
 
   @override
+  State<ListItem> createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          ItemCard(
-              imgPath:
-                  "https://upload.wikimedia.org/wikipedia/commons/9/9a/Reel_and_Brand_-_September_2021_-_Sarah_Stierch_05.jpg",
-              title: "Beefsteak",
-              dueDate: "31/12/2021",
+    return Padding(
+      padding: const EdgeInsets.only(right: 5.0),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.list_item.length,
+        itemBuilder: (context, index) {
+          final temp = widget.list_item;
+          String imgPath =
+              "https://ameovat.com/wp-content/uploads/2016/05/cach-lam-ga-ran.jpg";
+          if (temp[index]["photos_link"].length > 0) {
+            imgPath = temp[index]["photos_link"][0];
+          }
+          DateTime date = DateTime.parse(temp[index]["due_date"].toString());
+          return ItemCard(
               onClick: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ItemDetail()));
-              }),
-          ItemCard(
-              imgPath:
-                  "https://assets.epicurious.com/photos/57c44636082060f11022b55e/16:9/w_1280,c_limit/shutterstock_368008064.jpg",
-              title: "Fried Chicken",
-              dueDate: "15/12/2021"),
-          ItemCard(
-              imgPath:
-                  "https://assets.epicurious.com/photos/57c44636082060f11022b55e/16:9/w_1280,c_limit/shutterstock_368008064.jpg",
-              title: "Fried Chicken",
-              dueDate: "15/12/2021"),
-        ],
+                Item item = Item.fromJson(temp[index]);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ItemDetail(item: item);
+                }));
+              },
+              imgPath: imgPath,
+              title: temp[index]["title"].toString(),
+              dueDate: date.day.toString() + "-" + date.month.toString() + "-" + date.year.toString());
+        },
       ),
     );
   }

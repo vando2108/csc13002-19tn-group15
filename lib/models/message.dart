@@ -1,15 +1,14 @@
 class Message {
-  final String id;
-  final String senderId;
-  final String receiverId;
-  final String content;
-  final DateTime? time;
+  final String message;
+  final String senderid;
+  final String reciverid;
+  final DateTime time;
 
-  Message({
-    required this.id,
-    required this.senderId,
-    required this.receiverId,
-    required this.content,
-    this.time,
-  });
+  Message(this.message, this.senderid, this.reciverid, this.time);
+
+  Message.fromJson(Map<String, dynamic> json)
+      : message = json['content'],
+        senderid = json['sender'],
+        reciverid = json['receiver'],
+        time = DateTime.parse(json['time']);
 }
