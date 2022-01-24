@@ -1,4 +1,9 @@
+import 'dart:async';
+
+import 'package:flashare/models/api.dart';
+import 'package:flashare/providers/fetch_item_random.dart';
 import 'package:flashare/views/components/home_header.dart';
+import 'package:flashare/views/screens/home/list_item_category.dart';
 import 'package:flashare/views/widgets/announce.dart';
 import 'package:flashare/views/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -11,26 +16,42 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Timer? timer;
+  Future<ApiResponse>? list_item_;
   var _index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      if (mounted) {
+        setState(() {
+          list_item_ = FetchRandomItem();
+        });
+      }
+    });
+  }
+
   final _top_contributor = [
     // {
     //   "https://scontent.fvca1-1.fna.fbcdn.net/v/t1.6435-9/71286345_2193084204317518_881016848903045120_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=wdrPbAJTs4kAX9p6z3s&_nc_ht=scontent.fvca1-1.fna&oh=00_AT8cvEbewS_s-1WCcPYzsmZc6ziJh2eW_4bNUwljvL792w&oe=61E0F54F",
     //   "Van Do"
     // },
     {
-      "https://scontent.fvca1-4.fna.fbcdn.net/v/t1.6435-9/155406591_2912083059027039_264416715502496679_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=T9LyKfwkzsMAX_zF60o&_nc_ht=scontent.fvca1-4.fna&oh=00_AT8OjsFeFpDtaLe5fI-tUV3ibU647WzmWaHsVSIlvOTTKQ&oe=61E2DE90",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Ha Minh"
     },
     {
-      "https://scontent.fvca1-2.fna.fbcdn.net/v/t1.18169-9/14141944_301260170232647_3817991168521306987_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=19026a&_nc_ohc=FGkNHzQw2IoAX9hRcuc&_nc_ht=scontent.fvca1-2.fna&oh=00_AT-f56rZr_TcdQZdXvODgD4ArXpkYln3ltfJvY5zam1nxA&oe=61E3939F",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Duc Tu"
     },
     {
-      "https://scontent.fvca1-4.fna.fbcdn.net/v/t1.6435-9/130476944_1539815723072679_109374608196100940_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=PhbSvRxxhO4AX9_hniI&_nc_oc=AQlZ2xKkItxkaIP9x3uHWxcQFVxanoUwBIAv7o_rYNU9EmSF8RYJ-NkaILNv_dVhDpC7iaQ1N-2NNa9oMVg4I4Vm&_nc_ht=scontent.fvca1-4.fna&oh=00_AT9d01j6JrOMuNS7h2PYl2YQoiooXDqPuesGUEOA2S4D0g&oe=61E124BD",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Xuan Dang"
     },
     {
-      "https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-9/49673937_426082511263686_5771748065077624832_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=ad2b24&_nc_ohc=FRtEeRwlDOAAX-7Zamo&_nc_ht=scontent.fvca1-3.fna&oh=00_AT-jZWZJx2I6AXCqA0IUDdC9w34V65mP35i2wb9HC_hu7g&oe=61E41718",
+      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
       "Trung Hieu"
     }
   ];
@@ -41,7 +62,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 40,
@@ -67,18 +87,22 @@ class _HomeState extends State<Home> {
               CategorieCard(
                 iconPath: "assets/fork.png",
                 title: "Food",
+                category: "food",
               ),
               CategorieCard(
                 iconPath: "assets/tshirt.png",
                 title: "Clothes",
+                category: "clothes",
               ),
               CategorieCard(
                 iconPath: "assets/electronics.png",
                 title: "Houseware",
+                category: "houseware",
               ),
               CategorieCard(
                 iconPath: "assets/more.png",
                 title: "More",
+                category: "all",
               ),
             ],
           ),
@@ -86,7 +110,24 @@ class _HomeState extends State<Home> {
             height: 15,
           ),
           GroupText("Item"),
-          const ListItem(),
+          FutureBuilder(
+            future: list_item_,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ApiResponse temp = snapshot.data as ApiResponse;
+                if (temp.Sucess == false) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                timer!.cancel();
+                return Container(
+                    height: 220,
+                    child: ListItem(
+                      list_item: temp.Data,
+                    ));
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
           GroupText("Top Contributor"),
           const SizedBox(
             height: 15,
@@ -185,45 +226,57 @@ class CategorieCard extends StatelessWidget {
     Key? key,
     required this.iconPath,
     required this.title,
+    required this.category,
   }) : super(key: key);
 
   final String iconPath;
   final String title;
+  final String category;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          width: 55,
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: const Color(0xfff4b400).withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Image.asset(
-                    iconPath,
-                    color: const Color(
-                      0xffBA8900,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ListItemByCategory(
+            category: category,
+          );
+        }));
+      },
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            width: 55,
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: const Color(0xfff4b400).withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Image.asset(
+                      iconPath,
+                      color: const Color(
+                        0xffBA8900,
+                      ),
+                      scale: 0.9,
                     ),
-                    scale: 0.9,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 9))
-            ],
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 9))
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

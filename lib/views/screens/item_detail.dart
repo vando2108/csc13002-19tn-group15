@@ -1,8 +1,11 @@
+import 'package:flashare/models/item.dart';
 import 'package:flashare/views/screens/body.dart';
 import 'package:flutter/material.dart';
 
 class ItemDetail extends StatelessWidget {
-  const ItemDetail({Key? key}) : super(key: key);
+  ItemDetail({Key? key, required this.item}) : super(key: key);
+
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +22,18 @@ class ItemDetail extends StatelessWidget {
         ),
         shadowColor: Colors.transparent,
       ),
-      body: TempBody(),
+      body: TempBody(item: item),
     );
   }
 }
 
 class TempBody extends StatefulWidget {
-  const TempBody({
+  TempBody({
     Key? key,
+    required this.item,
   }) : super(key: key);
+
+  final Item item;
 
   @override
   State<TempBody> createState() => _TempBodyState();
@@ -68,7 +74,7 @@ class _TempBodyState extends State<TempBody> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                       ListImg.length, (index) => buildDot(index: index)))
             ],
@@ -82,11 +88,11 @@ class _TempBodyState extends State<TempBody> {
               const SizedBox(
                 height: 70,
               ),
-              const Center(
+              Center(
                 child: Text(
-                  "Beefsteak",
+                  widget.item.title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 28,
                   ),

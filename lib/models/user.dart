@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class User {
@@ -19,8 +20,8 @@ class User {
     var json =
         jsonEncode({'full_name': Name, 'email': Email, 'password': Password});
     try {
-      http.Response response = await http.post(
-          Uri.parse("http://192.168.1.8:8080/api/user/auth/sign-up"),
+      String url = dotenv.env["HOST"].toString() + "/api/user/auth/sign-up";
+      http.Response response = await http.post(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -35,8 +36,8 @@ class User {
   Future<List> SignIn() async {
     var json = jsonEncode({'email': Email, 'password': Password});
     try {
-      http.Response response = await http.post(
-          Uri.parse("http://192.168.1.8:8080/api/user/auth/sign-in"),
+      String url = "http://" + dotenv.env["HOST"].toString() + "/api/user/auth/sign-in";
+      http.Response response = await http.post(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
