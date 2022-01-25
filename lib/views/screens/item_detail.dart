@@ -5,6 +5,7 @@ import 'package:flashare/models/item.dart';
 import 'package:flashare/models/user.dart';
 import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/body.dart';
+import 'package:flashare/views/screens/chat/char_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -207,6 +208,8 @@ class _TempBodyState extends State<TempBody> {
                           MaterialPageRoute(
                               builder: (context) => const WattingScreen()));
                       final temp = await RequestItem(widget.item.id);
+                      final response = await FetchUser(widget.item.upload_by);
+                      final receiver = User.fromJson(response.Data);
                       Navigator.pop(context);
                       if (temp.Sucess == false) {
                         showDialog(
@@ -223,7 +226,15 @@ class _TempBodyState extends State<TempBody> {
                                 ],
                               );
                             });
-                      } else {}
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ChatScreen(
+                            receiver: receiver.ID,
+                            receiver_name: receiver.Name,
+                          );
+                        }));
+                      }
                     },
                     child: const SizedBox(
                         height: 60,
