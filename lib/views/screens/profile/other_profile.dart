@@ -1,42 +1,29 @@
-import 'dart:async';
-
 import 'package:flashare/controller/profile_controller.dart';
 import 'package:flashare/controller/review_controller.dart';
 import 'package:flashare/models/user.dart';
-import 'package:flashare/views/screens/authen/signin.dart';
-import 'package:flashare/views/screens/review_screen.dart';
+import 'package:flashare/views/screens/profile/add_review_screen.dart';
+import 'package:flashare/views/screens/profile/review_screen.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProfileTab extends StatefulWidget {
-  const ProfileTab({Key? key}) : super(key: key);
+class OtherProfileScreen extends StatefulWidget {
+  final String userId;
+  const OtherProfileScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _ProfileTabState createState() => _ProfileTabState();
+  _OtherProfileScreenState createState() => _OtherProfileScreenState();
 }
 
-class _ProfileTabState extends State<ProfileTab> {
+class _OtherProfileScreenState extends State<OtherProfileScreen> {
   late Future<User> data;
   late Future<List> dataReview;
-  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    data = ProfileController().getProfile();
-    dataReview = ReviewController().getReview();
-    timer = Timer.periodic(Duration(seconds: 30), (Timer t) {
-      setState(() {
-        dataReview = ReviewController().getReview();
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
+    data = ProfileController().getProfile(userId: widget.userId);
+    dataReview = ReviewController().getReview(userId: widget.userId);
   }
 
   @override
@@ -56,14 +43,24 @@ class _ProfileTabState extends State<ProfileTab> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Center(
-                      child: Text(
-                        'Thông tin của tôi',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        // SizedBox(width: 20),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(CupertinoIcons.back),
                         ),
-                      ),
+                        SizedBox(width: 40),
+                        Text(
+                          'Thông tin cá nhân',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 24),
                     _renderProfile(
@@ -77,7 +74,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       address: snap.data!.address,
                     ),
                     SizedBox(height: 24),
-                    _renderSetting(context),
+                    _renderSetting(snap.data!),
                   ],
                 ),
               ),
@@ -216,7 +213,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Widget _renderSetting(BuildContext context) {
+  Widget _renderSetting(User sender) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,44 +227,28 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           SizedBox(height: 20),
           _buttonBox(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddReviewScreen(
+                            sender: sender,
+                          )));
+            },
             icon: Icons.person,
-            action: 'Thay đổi thông tin cá nhân',
+            action: 'Đánh giá',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
           SizedBox(height: 20),
           _buttonBox(
             onPressed: () {
-              Navigator.pushNamed(context, '/change_password');
+              // TODO: link toi chat vs id la widget.userId
             },
-            icon: Icons.security,
-            action: 'Thay đổi mật khẩu',
+            icon: Icons.person,
+            action: 'Chat',
             color: Colors.white,
             background: Color(0xff4285F4),
-          ),
-          SizedBox(height: 20),
-          _buttonBox(
-            onPressed: () {
-              Navigator.pushNamed(context, '/my_request');
-            },
-            icon: Icons.storage,
-            action: 'Yêu cầu của tôi',
-            color: Colors.white,
-            background: Color(0xff4285F4),
-          ),
-          SizedBox(height: 20),
-          _buttonBox(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => new SignIn()));
-              // Navigator.pop(context);
-            },
-            icon: Icons.exit_to_app,
-            action: 'Đăng xuất',
-            color: Color(0xff395185),
-            background: Color.fromRGBO(218, 218, 218, 0.5),
           ),
           SizedBox(height: 20),
         ],

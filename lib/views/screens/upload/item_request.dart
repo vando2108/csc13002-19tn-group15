@@ -1,5 +1,5 @@
 import 'package:flashare/controller/upload_controller.dart';
-import 'package:flashare/views/screens/other_profile.dart';
+import 'package:flashare/views/screens/profile/other_profile.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,29 +1,51 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flashare/controller/profile_controller.dart';
 import 'package:flashare/controller/review_controller.dart';
 import 'package:flashare/models/user.dart';
-import 'package:flashare/views/screens/add_review_screen.dart';
-import 'package:flashare/views/screens/review_screen.dart';
+import 'package:flashare/views/screens/authen/signin.dart';
+import 'package:flashare/views/screens/profile/review_screen.dart';
+import 'package:flashare/views/screens/profile/update_avatar.dart';
+import 'package:flashare/views/screens/profile/update_profile.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class OtherProfileScreen extends StatefulWidget {
-  final String userId;
-  const OtherProfileScreen({Key? key, required this.userId}) : super(key: key);
+class ProfileTab extends StatefulWidget {
+  const ProfileTab({Key? key}) : super(key: key);
 
   @override
-  _OtherProfileScreenState createState() => _OtherProfileScreenState();
+  _ProfileTabState createState() => _ProfileTabState();
 }
 
-class _OtherProfileScreenState extends State<OtherProfileScreen> {
+class _ProfileTabState extends State<ProfileTab> {
   late Future<User> data;
   late Future<List> dataReview;
+  Timer? timer;
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  String _base64Image = "";
 
   @override
   void initState() {
     super.initState();
-    data = ProfileController().getProfile(userId: widget.userId);
-    dataReview = ReviewController().getReview(userId: widget.userId);
+    data = ProfileController().getProfile();
+    dataReview = ReviewController().getReview();
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+      setState(() {
+        data = ProfileController().getProfile();
+        dataReview = ReviewController().getReview();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -43,24 +65,14 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        // SizedBox(width: 20),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(CupertinoIcons.back),
+                    Center(
+                      child: Text(
+                        'Thông tin của tôi',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(width: 40),
-                        Text(
-                          'Thông tin cá nhân',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     SizedBox(height: 24),
                     _renderProfile(
@@ -74,7 +86,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                       address: snap.data!.address,
                     ),
                     SizedBox(height: 24),
-                    _renderSetting(snap.data!),
+                    _renderSetting(context),
                   ],
                 ),
               ),
@@ -90,10 +102,18 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
     return Container(
       child: Row(
         children: [
-          AvatarCircle(
-            imgUrl: avatar ??
-                'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
-            radius: 60,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UpdateAvatarScreen()));
+            },
+            child: AvatarCircle(
+              imgUrl: avatar ??
+                  'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
+              radius: 60,
+            ),
           ),
           SizedBox(width: 24),
           Column(
@@ -213,7 +233,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
     );
   }
 
-  Widget _renderSetting(User sender) {
+  Widget _renderSetting(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,14 +251,45 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddReviewScreen(
-                            sender: sender,
-                          )));
+                      builder: (context) => UpdateProfileScreen()));
             },
             icon: Icons.person,
-            action: 'Đánh giá',
+            action: 'Thay đổi thông tin cá nhân',
             color: Colors.white,
             background: Color(0xff4285F4),
+          ),
+          SizedBox(height: 20),
+          _buttonBox(
+            onPressed: () {
+              Navigator.pushNamed(context, '/change_password');
+            },
+            icon: Icons.security,
+            action: 'Thay đổi mật khẩu',
+            color: Colors.white,
+            background: Color(0xff4285F4),
+          ),
+          SizedBox(height: 20),
+          _buttonBox(
+            onPressed: () {
+              Navigator.pushNamed(context, '/my_request');
+            },
+            icon: Icons.storage,
+            action: 'Yêu cầu của tôi',
+            color: Colors.white,
+            background: Color(0xff4285F4),
+          ),
+          SizedBox(height: 20),
+          _buttonBox(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => new SignIn()));
+              // Navigator.pop(context);
+            },
+            icon: Icons.exit_to_app,
+            action: 'Đăng xuất',
+            color: Color(0xff395185),
+            background: Color.fromRGBO(218, 218, 218, 0.5),
           ),
           SizedBox(height: 20),
         ],

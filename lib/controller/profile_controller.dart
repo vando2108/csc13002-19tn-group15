@@ -33,16 +33,41 @@ class ProfileController {
     }
   }
 
-  Future<dynamic> getReview({
-    required String id,
+  Future<dynamic> updateProfile({
+    required String newName,
+    required String newPhone,
+    required String newAdrr,
+    String? avatar,
   }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    Map<String, dynamic> m = {};
+    m["id"] = id;
+    if (newName != "") m["full_name"] = newName;
+    if (newPhone != "") m["phone_number"] = newPhone;
+    if (newAdrr != "") m["address"] = newAdrr;
+    var json = jsonEncode(m);
+    Map<String, dynamic> mm = {};
+    mm["id"] = id;
+    if (avatar != "") m["avatar_base64"] = avatar;
+    var json2 = jsonEncode(mm);
+    print(json);
     try {
       http.Response response = await http.post(
-        Uri.parse(""), // TODO: API GET REVIEW
+        Uri.parse(
+            "http://$domain/api/user/profile/update-info"), // TODO: API update profile
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: json,
       );
+      if (avatar != null) {
+      http.Response res = await http.post(Uri.parse(
+            "http://$domain/api/user/profile/update-info"), // TODO: API update profile
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json2,); 
+      }
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];
     } on Exception catch (_) {
@@ -50,15 +75,22 @@ class ProfileController {
     }
   }
 
-  Future<dynamic> updateProfile({
-    required String id, // TODO:
+  Future<dynamic> updateAvatar({
+    required String avatar,
   }) async {
+    String id = await SecureStorage.readSecureData(SecureStorage.userID);
+    Map<String, dynamic> mm = {};
+    mm["id"] = id;
+    mm["avatar_base64"] = avatar;
+    var json = jsonEncode(mm);
     try {
       http.Response response = await http.post(
-        Uri.parse(""), // TODO: API update profile
+        Uri.parse(
+            "http://$domain/api/user/profile/update-avatar"), // TODO: API update profile
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: json,
       );
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];

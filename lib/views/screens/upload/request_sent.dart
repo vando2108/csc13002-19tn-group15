@@ -1,5 +1,5 @@
 import 'package:flashare/controller/request_controller.dart';
-import 'package:flashare/views/screens/add_review_screen.dart';
+import 'package:flashare/views/screens/profile/add_review_screen.dart';
 import 'package:flashare/views/widgets/app_size.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flashare/views/widgets/item_posted_box.dart';
@@ -20,6 +20,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
   late TabController _tabController;
   int _currentTab = 0;
   late Future<List> dataPending;
+  
   late Future<List> dataArchived;
   var requestController = RequestController();
 
@@ -83,7 +84,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                   indicatorPadding:
                       const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
-                    Tab(text: 'Đang giao'),
+                    Tab(text: 'Yêu cầu của tôi'),
                     Tab(text: 'Đã nhận'),
                   ],
                 ),

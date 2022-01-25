@@ -1,5 +1,5 @@
 import 'package:flashare/models/item.dart';
-import 'package:flashare/views/screens/item_detail.dart';
+import 'package:flashare/views/screens/home/item_detail.dart';
 import 'package:flutter/material.dart';
 
 import 'item_card.dart';

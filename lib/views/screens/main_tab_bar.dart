@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flashare/views/screens/chat/chat_tab.dart';
 import 'package:flashare/views/screens/home/home.dart';
-import 'package:flashare/views/screens/profile_tab.dart';
-import 'package:flashare/views/screens/upload_tab.dart';
+import 'package:flashare/views/screens/profile/profile_tab.dart';
+import 'package:flashare/views/screens/upload/upload_tab.dart';
 import 'package:flashare/views/widgets/app_size.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,4 +1,4 @@
-import 'package:flashare/views/screens/item_request.dart';
+import 'package:flashare/views/screens/upload/item_request.dart';
 import 'package:flashare/views/widgets/image_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
