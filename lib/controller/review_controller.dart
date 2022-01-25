@@ -36,7 +36,6 @@ class ReviewController {
       "rate": rate,
       "review": review,
     });
-    print(json);
 
     try {
       String domain = dotenv.get('DOMAIN');

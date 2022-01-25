@@ -14,7 +14,6 @@ class AuthenticationController {
       "old_password": oldPassword,
       "new_password": newPassword,
     });
-    print(json);
 
     try {
       String domain = dotenv.get('DOMAIN');

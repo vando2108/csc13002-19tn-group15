@@ -18,9 +18,6 @@ class RequestController {
         body: json,
       );
       var body = jsonDecode(response.body);
-      print('---------------data pending---------');
-      print(body['success']);
-      print(body['data']);
       if (body['data'] == null) body['data'] = [];
       List data = [body["success"], body["data"]];
       return data;
@@ -41,9 +38,6 @@ class RequestController {
         body: json,
       );
       var body = jsonDecode(response.body);
-      print('--------data archived------');
-      print(body['success']);
-      print(body['data']);
       if (body['data'] == null) body['data'] = [];
       List data = [body["success"], body["data"]];
       return data;
@@ -64,9 +58,6 @@ class RequestController {
         body: json,
       );
       var body = jsonDecode(response.body);
-      print('--------data archived------');
-      print(body['success']);
-      print(body['data']);
       if (body['data'] == null) body['data'] = [];
       List data = [body["success"], body["data"]];
       return data;

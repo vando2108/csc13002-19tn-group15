@@ -138,9 +138,6 @@ class _RequestSentScreenState extends State<RequestSentScreen>
               children: List.generate(data[1].length, (index) {
                 var item = data[1][index]['item'];
                 var user = data[1][index]['sender'];
-                print('-------------VAILOZZZZZ------');
-                print(data[1][index]['request']['status']);
-                print('------------------VAICACCCCC-----');
                 return Column(
                   children: [
                     ItemRequestBox(

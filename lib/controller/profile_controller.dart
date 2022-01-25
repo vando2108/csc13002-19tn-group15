@@ -46,28 +46,15 @@ class ProfileController {
     if (newPhone != "") m["phone_number"] = newPhone;
     if (newAdrr != "") m["address"] = newAdrr;
     var json = jsonEncode(m);
-    Map<String, dynamic> mm = {};
-    mm["id"] = id;
-    if (avatar != "") m["avatar_base64"] = avatar;
-    var json2 = jsonEncode(mm);
-    print(json);
     try {
       http.Response response = await http.post(
         Uri.parse(
-            "http://$domain/api/user/profile/update-info"), // TODO: API update profile
+            "http://$domain/api/user/profile/update-info"), 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json,
       );
-      if (avatar != null) {
-      http.Response res = await http.post(Uri.parse(
-            "http://$domain/api/user/profile/update-info"), // TODO: API update profile
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: json2,); 
-      }
       var body = jsonDecode(response.body);
       return [body["success"], body["data"]];
     } on Exception catch (_) {
