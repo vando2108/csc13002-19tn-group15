@@ -23,8 +23,8 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   final ImagePicker _picker = ImagePicker();
   DateTime selectedDate = DateTime.now();
   String _base64Image = "";
-  var _nameText = new TextEditingController();
-  var _descriptionText = new TextEditingController();
+  var _nameText = new TextEditingController(text: "");
+  var _descriptionText = new TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {

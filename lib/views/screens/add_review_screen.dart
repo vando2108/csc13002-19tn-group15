@@ -13,7 +13,7 @@ class AddReviewScreen extends StatefulWidget {
 }
 
 class _AddReviewScreenState extends State<AddReviewScreen> {
-  var _textController = new TextEditingController();
+  var _textController = new TextEditingController(text: "");
   List<bool> star = [false, false, false, false, false];
   int _rate = 0;
   @override
@@ -49,7 +49,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 children: [
                   AvatarCircle(
                     imgUrl: sender.avatarLink ??
-                        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                        'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
                     radius: 36,
                   ),
                   SizedBox(width: 20),
@@ -130,7 +130,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           List response = await ReviewController().addReview(
             receiver: widget.sender.ID,
             rate: _rate,
-            review: _textController.toString(),
+            review: _textController.text,
           );
           if (response[0] == false) {
             _showDialog(message: response[1]);

@@ -5,9 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ReviewController {
-  Future<List> getReview() async {
+  Future<List> getReview({String? userId}) async {
     String id = await SecureStorage.readSecureData(SecureStorage.userID);
-
+    if (userId != null) id = userId;
     try {
       String domain = dotenv.get('DOMAIN');
       http.Response response = await http.get(
@@ -17,6 +17,7 @@ class ReviewController {
         },
       );
       var body = jsonDecode(response.body);
+      if (body["data"] == null) body["data"] = [];
       return [body["success"], body["data"]];
     } on Exception catch (_) {
       return [false, "Can't connect to server"];

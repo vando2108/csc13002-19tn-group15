@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flashare/controller/upload_controller.dart';
 import 'package:flashare/views/widgets/app_size.dart';
 import 'package:flashare/views/widgets/item_posted_box.dart';
@@ -19,6 +21,7 @@ class _UploadTabState extends State<UploadTab>
   late Future<List> dataItem;
   List itemOpen = [];
   List itemClosed = [];
+  Timer? timer;
 
   @override
   void initState() {
@@ -31,6 +34,11 @@ class _UploadTabState extends State<UploadTab>
       });
     });
     dataItem = UploadController().getItemUpload();
+    timer = Timer.periodic(Duration(seconds: 30), (Timer t) {
+      setState(() {
+        dataItem = UploadController().getItemUpload();
+      });
+    });
   }
 
   @override
@@ -51,6 +59,14 @@ class _UploadTabState extends State<UploadTab>
             padding: const EdgeInsets.fromLTRB(20, 60, 20, 60),
             child: Column(
               children: [
+                // _searchBar(),
+                Center(
+                  child: Text(
+                    'Vật phẩm tải lên',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 _searchBar(),
                 const SizedBox(height: 12),
                 TabBar(
@@ -106,7 +122,6 @@ class _UploadTabState extends State<UploadTab>
             );
           }
           List response = snap.data! as List;
-          print(response);
           if (response[0] == false) {
             return Center(
               child: Text(response[1]),
@@ -117,6 +132,8 @@ class _UploadTabState extends State<UploadTab>
           item.forEach((element) {
             if (element['item']['status'] == 'open') itemOpen.add(element);
           });
+          print('---------UPLOAD TAB------ POSTED');
+          print(itemOpen);
 
           return Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -134,19 +151,27 @@ class _UploadTabState extends State<UploadTab>
                 children: List.generate(itemOpen.length, (index) {
                   var it = itemOpen[index]['item'];
                   var requester = itemOpen[index]['requester'];
+                  print(it);
+                  print(requester);
+                  print('------------DONE UPLOAD TAB POSTED');
                   return Column(
                     children: [
                       requester == null
                           ? ItemPostedBox(
-                              imgUrl: it['photos_link'][0],
+                              imgUrl: it['photos_link'].length > 0
+                                  ? it['photos_link'][0]
+                                  : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                               category: it['category'],
                               description: it['description'],
                               name: it['title'],
-                              dueDate: 3,
+                              dueDate:
+                                  DateTime.parse(it['due_date'].toString()),
                               itemId: it['id'],
                             )
                           : ItemRequestBox(
-                              imgUrl: it['photos_link'][0],
+                              imgUrl: it['photos_link'].length > 0
+                                  ? it['photos_link'][0]
+                                  : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                               category: it['category'],
                               name: it['title'],
                               description: it['description'],
@@ -197,15 +222,21 @@ class _UploadTabState extends State<UploadTab>
                     children: [
                       requester == null
                           ? ItemPostedBox(
-                              imgUrl: it['photos_link'][0],
+                              imgUrl: it['photos_link'].length > 0
+                                  ? it['photos_link'][0]
+                                  : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                               category: it['category'],
                               description: it['description'],
                               name: it['title'],
-                              dueDate: 3,
+                              dueDate:
+                                  DateTime.parse(it['due_date'].toString()),
                               itemId: it['id'],
+                              isSent: true,
                             )
                           : ItemRequestBox(
-                              imgUrl: it['photos_link'][0],
+                              imgUrl: it['photos_link'].length > 0
+                                  ? it['photos_link'][0]
+                                  : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                               category: it['category'],
                               name: it['title'],
                               description: it['description'],
@@ -213,6 +244,7 @@ class _UploadTabState extends State<UploadTab>
                               userId: requester['id'],
                               imgUser: requester['avatar_link'],
                               itemId: it['id'],
+                              isSent: true,
                             ),
                       SizedBox(height: 12),
                     ],

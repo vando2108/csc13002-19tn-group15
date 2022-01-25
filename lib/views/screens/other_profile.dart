@@ -1,6 +1,8 @@
 import 'package:flashare/controller/profile_controller.dart';
+import 'package:flashare/controller/review_controller.dart';
 import 'package:flashare/models/user.dart';
 import 'package:flashare/views/screens/add_review_screen.dart';
+import 'package:flashare/views/screens/review_screen.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,13 @@ class OtherProfileScreen extends StatefulWidget {
 
 class _OtherProfileScreenState extends State<OtherProfileScreen> {
   late Future<User> data;
+  late Future<List> dataReview;
 
   @override
   void initState() {
     super.initState();
     data = ProfileController().getProfile(userId: widget.userId);
+    dataReview = ReviewController().getReview(userId: widget.userId);
   }
 
   @override
@@ -41,16 +45,16 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                   children: [
                     Row(
                       children: [
-                        SizedBox(width: 20),
+                        // SizedBox(width: 20),
                         IconButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
                           icon: Icon(CupertinoIcons.back),
                         ),
-                        SizedBox(width: 60),
+                        SizedBox(width: 40),
                         Text(
-                          'Thông tin của họ',
+                          'Thông tin cá nhân',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -88,7 +92,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
         children: [
           AvatarCircle(
             imgUrl: avatar ??
-                'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
             radius: 60,
           ),
           SizedBox(width: 24),
@@ -101,21 +105,45 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               SizedBox(height: 12),
+              _review(),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _review() {
+    return FutureBuilder(
+        future: dataReview,
+        builder: (context, snap) {
+          if (!snap.hasData) return Container();
+          List listReview = snap.data! as List;
+          if (listReview[0] == false) return Container();
+          int rate = listReview[1]['rate_avg'].round();
+          listReview = listReview[1]['reviews'];
+          return Column(
+            children: [
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
                     Icons.star,
-                    color: Colors.yellow,
+                    color: (index + 1 <= rate) ? Colors.yellow : null,
                   );
                 }),
               ),
               SizedBox(height: 12),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/review');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReviewScreen(
+                                reviews: listReview,
+                              )));
                 },
                 child: Text(
-                  '4 đánh giá',
+                  '${listReview.length} đánh giá',
                   style: TextStyle(
                     color: Color.fromRGBO(66, 133, 244, 1),
                     fontSize: 14,
@@ -124,10 +152,8 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                 ),
               ),
             ],
-          )
-        ],
-      ),
-    );
+          );
+        });
   }
 
   Widget _renderInformation(

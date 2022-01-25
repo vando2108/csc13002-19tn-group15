@@ -17,6 +17,7 @@ class UploadController {
         },
       );
       var body = jsonDecode(response.body);
+      if (body["data"] == null) body["data"] = [];
       return [body["success"], body["data"]];
     } on Exception catch (_) {
       return [false, "Can't connect to server"];
@@ -59,6 +60,7 @@ class UploadController {
               },
               body: json);
       var body = jsonDecode(response.body);
+      if (body["data"] == null) body["data"] = [];
       return [body["success"], body["data"]];
     } on Exception catch (_) {
       return [false, "Can't connect to server"];

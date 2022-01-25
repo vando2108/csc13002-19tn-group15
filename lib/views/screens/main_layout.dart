@@ -53,7 +53,6 @@ class MainScreen extends StatelessWidget {
         '/upload_item': (context) => const UploadItemScreen(),
         '/my_request': (context) => const RequestSentScreen(),
         '/change_password': (context) => const ChangePasswordScreen(),
-        '/review': (context) => const ReviewScreen(),
       },
     );
   }

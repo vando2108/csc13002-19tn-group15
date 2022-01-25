@@ -26,6 +26,16 @@ class User {
     this.rate,
   });
 
+  User.fromJson(Map<String, dynamic> json)
+      : ID = json["id"].toString(),
+        Name = json["full_name"],
+        Email = json["email"],
+        Password = json["password_hash_code"],
+        avatarLink = json["avatar_link"],
+        phoneNumber = json["phone_number"],
+        address = json["address"],
+        rate = json["rate"];
+
   // ignore: non_constant_identifier_names
   Future<List> SignUp() async {
     var json =

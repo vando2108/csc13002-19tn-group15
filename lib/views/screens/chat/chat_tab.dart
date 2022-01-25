@@ -24,7 +24,7 @@ class _ChatTabState extends State<ChatTab> {
   void initState() {
     // TODO: implement initState
     list_contact_ = FetchListContact();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
       if (mounted) {
         setState(() {
           list_contact_ = FetchListContact();
@@ -79,7 +79,8 @@ class _ChatTabState extends State<ChatTab> {
                           children: [
                             CircleAvatar(
                               radius: 24,
-                              backgroundImage: NetworkImage((contact.Avatar == "")
+                              backgroundImage: NetworkImage((contact.Avatar ==
+                                      "")
                                   ? "https://scontent.fvca1-1.fna.fbcdn.net/v/t1.6435-9/71286345_2193084204317518_881016848903045120_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=AnsPLtSQyfcAX9AsRQ1&_nc_ht=scontent.fvca1-1.fna&oh=00_AT8EtCl_nR-1L3TZN6ziJYiG__ZEPFivDp7CpMp8t1ZjkQ&oe=62048DCF"
                                   : contact.Avatar),
                             ),

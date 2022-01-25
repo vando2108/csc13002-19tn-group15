@@ -8,8 +8,9 @@ class ItemPostedBox extends StatelessWidget {
   final String category;
   final String name;
   final String description;
-  final int dueDate;
+  final DateTime dueDate;
   final String itemId;
+  final bool? isSent;
 
   const ItemPostedBox({
     Key? key,
@@ -19,16 +20,20 @@ class ItemPostedBox extends StatelessWidget {
     required this.description,
     required this.name,
     required this.dueDate,
+    this.isSent,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) { 
+        if (isSent == null) Navigator.push(context, MaterialPageRoute(builder: (context) {
           return ItemRequestScreen(
-            itemUrl: imgUrl, category: category, itemName: name, itemId: itemId,
-          ); 
+            itemUrl: imgUrl,
+            category: category,
+            itemName: name,
+            itemId: itemId,
+          );
         }));
       },
       child: Container(
@@ -36,14 +41,15 @@ class ItemPostedBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           color: Color.fromRGBO(239, 238, 238, 1),
         ),
-
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.all(16),
+                height: 140,
+                width: double.infinity,
+                padding: EdgeInsets.all(12),
                 child: ImageBorder(image: Image.network(imgUrl)),
               ),
             ),
@@ -65,7 +71,7 @@ class ItemPostedBox extends StatelessWidget {
                           fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
-                      height: 4,
+                      height: 8,
                     ),
                     Text(
                       description,
@@ -77,8 +83,12 @@ class ItemPostedBox extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    Text(
-                      '$dueDate days left',
+                    isSent == true ? Container() : Text(
+                      dueDate.day.toString() +
+                          "-" +
+                          dueDate.month.toString() +
+                          "-" +
+                          dueDate.year.toString(),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.red,

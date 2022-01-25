@@ -50,12 +50,11 @@ class _TempBodyState extends State<TempBody> {
   Future<ApiResponse>? user_info;
   Future<ApiResponse>? request;
   Timer? timer;
-  String? user_id;
 
   // ignore: non_constant_identifier_names
   Future<void> Request() async {
     setState(() {
-      request = RequestItem(user_id.toString(), widget.item.id);
+      request = RequestItem(widget.item.id);
     });
   }
 
@@ -67,7 +66,6 @@ class _TempBodyState extends State<TempBody> {
       setState(() {
         if (!mounted) return;
         user_info = FetchUser(widget.item.upload_by.toString());
-        user_id = SecureStorage.readSecureData(SecureStorage.userID).toString();
       });
     });
   }
@@ -203,43 +201,29 @@ class _TempBodyState extends State<TempBody> {
               ),
               Center(
                 child: ElevatedButton(
-                    onPressed: () {
-                      Request();
-                      FutureBuilder(
-                        future: request,
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Scaffold(
-                              body: Container(
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.transparent,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                            );
-                          }
-                          ApiResponse temp = snapshot.data as ApiResponse;
-                          if (temp.Sucess == false) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CupertinoAlertDialog(
-                                  title: const Text("Error"),
-                                  content: Text(temp.Data),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text("Close"))
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                          return CircularProgressIndicator();
-                        },
-                      );
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const WattingScreen()));
+                      final temp = await RequestItem(widget.item.id);
+                      Navigator.pop(context);
+                      if (temp.Sucess == false) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: const Text("Error"),
+                                content: Text(temp.Data),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text("Close and try again"),
+                                  )
+                                ],
+                              );
+                            });
+                      } else {}
                     },
                     child: const SizedBox(
                         height: 60,
@@ -345,6 +329,19 @@ class ShowImage extends StatelessWidget {
                 img_link,
               ),
               fit: BoxFit.cover)),
+    );
+  }
+}
+
+class WattingScreen extends StatelessWidget {
+  const WattingScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: const Center(child: CircularProgressIndicator()),
     );
   }
 }

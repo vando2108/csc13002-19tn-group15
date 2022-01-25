@@ -137,17 +137,19 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                 return Column(
                   children: [
                     ItemRequestBox(
-                      imgUrl:
-                          item['photos_link'][0] ?? 'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+                      imgUrl: item['photos_link'].length > 0
+                          ? item['photos_link'][0]
+                          : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                       category: item['category'] ?? 'Thời trang',
-                      description:
-                          item['description'] ?? 'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
-                      name: item['title'] ??'Áo khoác',
-                      imgUser:
-                          user['avatar_link'] ?? 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                      description: item['description'] ??
+                          'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+                      name: item['title'] ?? 'Áo khoác',
+                      imgUser: user['avatar_link'] ??
+                          'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
                       nameUser: user['name'] ?? 'Cristiano Ronaldo',
                       userId: user['id'] ?? '',
                       itemId: item['id'],
+                      isSent: true,
                     ),
                     SizedBox(height: 10),
                   ],
@@ -183,17 +185,19 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                 return Column(
                   children: [
                     ItemRequestBox(
-                      imgUrl: item['photos_link'][0] ??
-                          'https://cf.shopee.vn/file/5f1e81b5bd213e5ad24cf56b33195b24',
+                      imgUrl: item['photos_link'].length > 0
+                          ? item['photos_link'][0]
+                          : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
                       category: item['category'] ?? 'Thời trang',
                       description: item['description'] ??
                           'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
                       name: item['title'] ?? 'Áo khoác',
                       imgUser: user['avatar_link'] ??
-                          'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                          'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
                       nameUser: user['name'] ?? 'Cristiano Ronaldo',
                       userId: user['id'] ?? '',
                       itemId: item['id'],
+                      isSent: true,
                     ),
                     SizedBox(height: 10),
                   ],
