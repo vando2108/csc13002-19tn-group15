@@ -24,7 +24,7 @@ class _ChatTabState extends State<ChatTab> {
   void initState() {
     // TODO: implement initState
     list_contact_ = FetchListContact();
-    timer = Timer.periodic(Duration(seconds: 30), (timer) {
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
       if (mounted) {
         setState(() {
           list_contact_ = FetchListContact();
@@ -55,6 +55,11 @@ class _ChatTabState extends State<ChatTab> {
               ApiResponse temp = snapshot.data as ApiResponse;
               if (temp.Sucess == false) {
                 return const Center(child: CircularProgressIndicator());
+              }
+              if (temp.Data== null) {
+                return Container(
+                  color: Colors.white,
+                );
               }
               return ListView.builder(
                 itemCount: temp.Data.length,

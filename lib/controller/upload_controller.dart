@@ -37,7 +37,6 @@ class UploadController {
         "+0" +
         now.timeZoneOffset.inHours.toString() +
         ":00";
-    // 2022-01-20T23:09:14.000000+07:00
     var json = jsonEncode({
       "title": name,
       "category": category,
