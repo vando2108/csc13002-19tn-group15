@@ -51,4 +51,27 @@ class RequestController {
       return [false, "Can't connect to server"];
     }
   }
+
+  Future<List> getRequestCancel() async {
+    try {
+      String id = await SecureStorage.readSecureData(SecureStorage.userID);
+      var json = jsonEncode({"user_id": id});
+      http.Response response = await http.post(
+        Uri.parse("http://$domain/api/request/get-cancelled"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json,
+      );
+      var body = jsonDecode(response.body);
+      print('--------data archived------');
+      print(body['success']);
+      print(body['data']);
+      if (body['data'] == null) body['data'] = [];
+      List data = [body["success"], body["data"]];
+      return data;
+    } catch (_) {
+      return [false, "Can't connect to server"];
+    }
+  }
 }
