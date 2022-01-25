@@ -20,14 +20,14 @@ class _RequestSentScreenState extends State<RequestSentScreen>
   late TabController _tabController;
   int _currentTab = 0;
   late Future<List> dataPending;
-  
   late Future<List> dataArchived;
+  late Future<List> dataCancel;
   var requestController = RequestController();
 
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this);
     _tabController.index = _currentTab;
     _tabController.addListener(() {
       this.setState(() {
@@ -36,6 +36,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
     });
     dataPending = requestController.getRequestPending();
     dataArchived = requestController.getRequestArchived();
+    dataCancel = requestController.getRequestCancel();
   }
 
   @override
@@ -48,7 +49,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
   Widget build(BuildContext context) {
     AppSize.config(context);
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 0),
         child: Scaffold(
@@ -84,8 +85,9 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                   indicatorPadding:
                       const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
-                    Tab(text: 'Yêu cầu của tôi'),
+                    Tab(text: 'Chờ xử lý'),
                     Tab(text: 'Đã nhận'),
+                    Tab(text: 'Từ chối')
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -93,6 +95,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                   child: TabBarView(controller: _tabController, children: [
                     _pendingView(),
                     _archivedView(),
+                    _cancelView(),
                   ]),
                 ),
               ],
@@ -166,6 +169,54 @@ class _RequestSentScreenState extends State<RequestSentScreen>
   Widget _archivedView() {
     return FutureBuilder(
       future: dataArchived,
+      builder: (context, snap) {
+        if (!snap.hasData)
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
+        List data = snap.data as List;
+        if (data[0] == false) {
+          return Center(child: Text(data[1]));
+        }
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: List.generate(data[1].length, (index) {
+                var item = data[1][index]['item'];
+                var user = data[1][index]['sender'];
+                return Column(
+                  children: [
+                    ItemRequestBox(
+                      imgUrl: item['photos_link'].length > 0
+                          ? item['photos_link'][0]
+                          : "https://images.assetsdelivery.com/compings_v2/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016.jpg",
+                      category: item['category'] ?? 'Thời trang',
+                      description: item['description'] ??
+                          'Áo khoác Cardiga Chanel phù hợp với sinh viên sống tại DakLak quê Hải Phòng',
+                      name: item['title'] ?? 'Áo khoác',
+                      imgUser: user['avatar_link'] ??
+                          'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
+                      nameUser: user['name'] ?? 'Cristiano Ronaldo',
+                      userId: user['id'] ?? '',
+                      itemId: item['id'],
+                      isSent: true,
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                );
+              }),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _cancelView() {
+    return FutureBuilder(
+      future: dataCancel,
       builder: (context, snap) {
         if (!snap.hasData)
           return Center(
