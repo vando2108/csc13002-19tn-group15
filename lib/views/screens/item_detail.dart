@@ -5,6 +5,7 @@ import 'package:flashare/models/item.dart';
 import 'package:flashare/models/user.dart';
 import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/body.dart';
+import 'package:flashare/views/screens/chat/char_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,12 +51,11 @@ class _TempBodyState extends State<TempBody> {
   Future<ApiResponse>? user_info;
   Future<ApiResponse>? request;
   Timer? timer;
-  String? user_id;
 
   // ignore: non_constant_identifier_names
   Future<void> Request() async {
     setState(() {
-      request = RequestItem(user_id.toString(), widget.item.id);
+      request = RequestItem(widget.item.id);
     });
   }
 
@@ -67,7 +67,6 @@ class _TempBodyState extends State<TempBody> {
       setState(() {
         if (!mounted) return;
         user_info = FetchUser(widget.item.upload_by.toString());
-        user_id = SecureStorage.readSecureData(SecureStorage.userID).toString();
       });
     });
   }
@@ -208,7 +207,9 @@ class _TempBodyState extends State<TempBody> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const WattingScreen()));
-                      final temp = await RequestItem(user_id.toString(), widget.item.id);
+                      final temp = await RequestItem(widget.item.id);
+                      final response = await FetchUser(widget.item.upload_by);
+                      final receiver = User.fromJson(response.Data);
                       Navigator.pop(context);
                       if (temp.Sucess == false) {
                         showDialog(
@@ -225,7 +226,15 @@ class _TempBodyState extends State<TempBody> {
                                 ],
                               );
                             });
-                      } else {}
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ChatScreen(
+                            receiver: receiver.ID,
+                            receiver_name: receiver.Name,
+                          );
+                        }));
+                      }
                     },
                     child: const SizedBox(
                         height: 60,

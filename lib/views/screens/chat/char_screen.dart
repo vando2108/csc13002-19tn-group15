@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:flashare/models/api.dart';
 import 'package:flashare/models/message.dart';
 import 'package:flashare/providers/message_api.dart';
 import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/chat/chat_tab.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -13,9 +16,11 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen({
     Key? key,
     required this.receiver,
+    required this.receiver_name,
   }) : super(key: key);
 
   final String receiver;
+  final String receiver_name;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -26,20 +31,24 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Message> _chat = [];
   ScrollController _scrollController = new ScrollController();
   late String userID = "";
+  final content_controller = TextEditingController();
+  late int count = 0;
+  Timer? timer;
 
   Future<void> Init() async {
-    final temp_userid =
-        await SecureStorage.readSecureData(SecureStorage.userID);
+    final tempUserid = await SecureStorage.readSecureData(SecureStorage.userID);
     setState(() {
-      userID = temp_userid;
+      userID = tempUserid;
     });
-    _channel = WebSocketChannel.connect(Uri.parse(
-        "ws://" + dotenv.env["HOST"].toString() + "/api/chat?sender=" +
-            userID +
-            "&receiver=" +
-            widget.receiver));
+    _channel = WebSocketChannel.connect(Uri.parse("ws://" +
+        dotenv.env["DOMAIN"].toString() +
+        "/api/chat?sender=" +
+        userID +
+        "&receiver=" +
+        widget.receiver));
     ApiResponse temp = await FetchListMessage(userID, widget.receiver);
-    for (var it in temp.Data) {
+    final list_msg = temp.Data.reversed.toList();
+    for (var it in list_msg) {
       setState(() {
         _chat.add(Message.fromJson(it));
       });
@@ -50,6 +59,16 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         _chat.add(msg);
       });
+      setState(() {
+        count = 0;
+      });
+      timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+        if (count == 2) timer.cancel();
+        setState(() {
+          count++;
+        });
+        scrollToEnd();
+      });
     });
   }
 
@@ -57,12 +76,29 @@ class _ChatScreenState extends State<ChatScreen> {
   initState() {
     super.initState();
     Init();
+    timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (mounted) {
+        if (count == 2) timer.cancel();
+        setState(() {
+          count++;
+        });
+        scrollToEnd();
+      }
+    });
+    scrollToEnd();
   }
 
   @override
   void dispose() {
     super.dispose();
     _channel.sink.close();
+  }
+
+  void scrollToEnd() async {
+    await _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(microseconds: 200),
+        curve: Curves.easeOut);
   }
 
   @override
@@ -77,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text("Kdimo"),
+        title: Text(widget.receiver_name),
       ),
       body: Column(
         children: [
@@ -85,12 +121,13 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _chat.length,
-                itemBuilder: (context, index) => Center(
-                  child: MessageRender(chat: _chat[index], userID: userID),
-                ),
-              ),
+                  controller: _scrollController,
+                  itemCount: _chat.length,
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: MessageRender(chat: _chat[index], userID: userID),
+                    );
+                  }),
             ),
           ),
           Container(
@@ -111,8 +148,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         color: Colors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: content_controller,
+                        decoration: const InputDecoration(
                             hintText: "Aa", border: InputBorder.none),
                       ),
                     ),
@@ -122,11 +160,29 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.image),
                   ),
                   IconButton(
-                      onPressed: () {
-                        _scrollController.animateTo(
-                            _scrollController.position.maxScrollExtent,
-                            duration: const Duration(microseconds: 200),
-                            curve: Curves.easeOut);
+                      onPressed: () async {
+                        if (content_controller.text != "") {
+                          final response = await SendMessage(
+                              widget.receiver, content_controller.text);
+                          if (response.Sucess == false) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    title: const Text("Error"),
+                                    content: Text(response.Data),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text("Close"),
+                                      )
+                                    ],
+                                  );
+                                });
+                          }
+                        }
+                        content_controller.clear();
+                        scrollToEnd();
                       },
                       icon: const Icon(
                         Icons.send,

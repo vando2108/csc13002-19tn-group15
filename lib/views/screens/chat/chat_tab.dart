@@ -67,6 +67,7 @@ class _ChatTabState extends State<ChatTab> {
                           MaterialPageRoute(builder: (context) {
                         return ChatScreen(
                           receiver: contact.Reciver,
+                          receiver_name: contact.Name,
                         );
                       }))
                     },

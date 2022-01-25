@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flashare/models/api.dart';
+import 'package:flashare/utils/user_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -65,7 +66,8 @@ class Item {
   }
 }
 
-Future<ApiResponse> RequestItem(String user_id, String item_id) async {
+Future<ApiResponse> RequestItem(String item_id) async {
+  final user_id = await SecureStorage.readSecureData(SecureStorage.userID);
   var json = jsonEncode({'user_id': user_id, 'item_id': item_id});
   try {
     String domain = dotenv.get('DOMAIN');
