@@ -136,7 +136,6 @@ class SignUp extends StatelessWidget {
                                     Email: email,
                                     Password: password);
                                 List respone = await newUser.SignUp();
-                                print(respone);
                                 if (respone[0] == false) {
                                   showDialog(
                                       context: context,

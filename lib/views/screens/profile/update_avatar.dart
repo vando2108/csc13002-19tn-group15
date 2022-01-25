@@ -165,7 +165,6 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
     _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
     setState(() {
       _image = image;
-      print(_base64Image);
     });
   }
 

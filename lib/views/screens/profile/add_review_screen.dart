@@ -104,7 +104,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
       child: TextFormField(
         maxLines: 8,
         onChanged: (value) {
-          print(value);
         },
         controller: _textController,
         decoration: InputDecoration(

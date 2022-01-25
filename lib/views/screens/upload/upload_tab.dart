@@ -132,8 +132,6 @@ class _UploadTabState extends State<UploadTab>
           item.forEach((element) {
             if (element['item']['status'] == 'open') itemOpen.add(element);
           });
-          print('---------UPLOAD TAB------ POSTED');
-          print(itemOpen);
 
           return Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -151,9 +149,6 @@ class _UploadTabState extends State<UploadTab>
                 children: List.generate(itemOpen.length, (index) {
                   var it = itemOpen[index]['item'];
                   var requester = itemOpen[index]['requester'];
-                  print(it);
-                  print(requester);
-                  print('------------DONE UPLOAD TAB POSTED');
                   return Column(
                     children: [
                       requester == null

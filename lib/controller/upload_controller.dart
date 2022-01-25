@@ -32,9 +32,7 @@ class UploadController {
     required DateTime dueDate,
   }) async {
     String id = await SecureStorage.readSecureData(SecureStorage.userID);
-    // print(dueDate.toUtc());
     DateTime now = DateTime.now();
-
     String dateTime = dueDate.toIso8601String() +
         "+0" +
         now.timeZoneOffset.inHours.toString() +
