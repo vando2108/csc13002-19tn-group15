@@ -39,8 +39,6 @@ class UploadController {
         "+0" +
         now.timeZoneOffset.inHours.toString() +
         ":00";
-    // 2022-01-20T23:09:14.000000+07:00
-    print(dateTime);
     var json = jsonEncode({
       "title": name,
       "category": category,
@@ -50,7 +48,6 @@ class UploadController {
       "uploaded_by": id,
       "photos_base64": photosBase64,
     });
-    print(json);
 
     try {
       http.Response response =
@@ -74,7 +71,6 @@ class UploadController {
     var json = jsonEncode({
       'item_id': itemId,
     });
-    print(json);
 
     try {
       http.Response response = await http.post(
@@ -98,7 +94,6 @@ class UploadController {
     var json = jsonEncode({
       'request_id': requestId,
     });
-    print(json);
 
     try {
       http.Response response = await http.post(
@@ -122,7 +117,6 @@ class UploadController {
     var json = jsonEncode({
       'request_id': requestId,
     });
-    print(json);
 
     try {
       http.Response response = await http.post(
@@ -146,7 +140,6 @@ class UploadController {
     var json = jsonEncode({
       'item_id': itemId,
     });
-    print(json);
 
     try {
       http.Response response =

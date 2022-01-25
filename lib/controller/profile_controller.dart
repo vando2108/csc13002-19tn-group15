@@ -50,7 +50,6 @@ class ProfileController {
     mm["id"] = id;
     if (avatar != "") m["avatar_base64"] = avatar;
     var json2 = jsonEncode(mm);
-    print(json);
     try {
       http.Response response = await http.post(
         Uri.parse(

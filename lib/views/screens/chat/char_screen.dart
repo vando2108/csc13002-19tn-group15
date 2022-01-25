@@ -47,11 +47,17 @@ class _ChatScreenState extends State<ChatScreen> {
         "&receiver=" +
         widget.receiver));
     ApiResponse temp = await FetchListMessage(userID, widget.receiver);
-    final list_msg = temp.Data.reversed.toList();
-    for (var it in list_msg) {
+    if (temp.Data == null) {
       setState(() {
-        _chat.add(Message.fromJson(it));
+        _chat.add(Message("", "", "", DateTime.now()));
       });
+    } else {
+      final list_msg = temp.Data.reversed.toList();
+      for (var it in list_msg) {
+        setState(() {
+          _chat.add(Message.fromJson(it));
+        });
+      }
     }
     _channel.stream.listen((event) {
       var temp = jsonDecode(event);
@@ -124,6 +130,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   controller: _scrollController,
                   itemCount: _chat.length,
                   itemBuilder: (context, index) {
+                    print(_chat[index]);
+                    if (_chat[index].message == "") {
+                      return Container();
+                    }
                     return Center(
                       child: MessageRender(chat: _chat[index], userID: userID),
                     );

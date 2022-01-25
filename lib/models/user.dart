@@ -43,7 +43,7 @@ class User {
     try {
       String domain = dotenv.get('DOMAIN');
       http.Response response =
-          await http.post(Uri.parse("http://$domain/api/user/auth/sign-up"),
+          await http.post(Uri.parse("https://$domain/api/user/auth/sign-up"),
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
               },
@@ -60,7 +60,7 @@ class User {
     try {
       String domain = dotenv.get('DOMAIN');
       http.Response response =
-          await http.post(Uri.parse("http://$domain/api/user/auth/sign-in"),
+          await http.post(Uri.parse("https://$domain/api/user/auth/sign-in"),
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
               },
@@ -75,7 +75,7 @@ class User {
 
 Future<ApiResponse> FetchUser(String user_id) async {
   try {
-    String url = "http://" +
+    String url = "https://" +
         dotenv.env["DOMAIN"].toString() +
         "/api/user/profile/get/" +
         user_id;
