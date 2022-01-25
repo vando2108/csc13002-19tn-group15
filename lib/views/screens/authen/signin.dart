@@ -12,8 +12,8 @@ import '../home/home.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({Key? key}) : super(key: key);
-  final _email_controller = new TextEditingController();
-  final _password_controller = new TextEditingController();
+  final _email_controller = new TextEditingController(text: "");
+  final _password_controller = new TextEditingController(text: "");
   final _form_key = GlobalKey<FormState>();
 
   @override
@@ -117,6 +117,7 @@ class SignIn extends StatelessWidget {
                       hintText: "Password",
                       icon: Icons.lock,
                       controller: _password_controller,
+                      isCheck: true,
                     ),
                   ],
                 ),

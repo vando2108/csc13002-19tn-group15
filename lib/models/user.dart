@@ -6,14 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class User {
-  late String ID;
-  late String Name;
-  late String Email;
-  late String Password;
-  late String? avatarLink;
-  late String? phoneNumber;
-  late String? address;
-  late double? rate;
+  final String ID;
+  final String Name;
+  final String Email;
+  final String Password;
+  final String? avatarLink;
+  final String? phoneNumber;
+  final String? address;
+  final double? rate;
 
   User({
     required this.ID,

@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ReviewScreen extends StatefulWidget {
-  const ReviewScreen({Key? key}) : super(key: key);
+  final List reviews;
+  const ReviewScreen({Key? key, required this.reviews}) : super(key: key);
 
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
@@ -57,13 +58,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
     return Container(
       child: SingleChildScrollView(
         child: Column(
-          children: List.generate(10, (index) => _reviewBox()),
+          children: List.generate(widget.reviews.length,
+              (index) => _reviewBox(widget.reviews[index])),
         ),
       ),
     );
   }
 
-  Widget _reviewBox() {
+  Widget _reviewBox(var review) {
     return Column(
       children: [
         Container(
@@ -75,8 +77,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
           child: Row(
             children: [
               AvatarCircle(
-                imgUrl:
-                    'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                imgUrl: review['reviewer_avatar_link'] ??
+                    'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
                 radius: 36,
               ),
               SizedBox(width: 24),
@@ -84,7 +86,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Phan Hiếu',
+                    review['reviewer_name'],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
@@ -92,13 +94,23 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   ),
                   SizedBox(height: 8),
                   Row(
-                    children: List.generate(5, (index) => Icon(Icons.star, color: Colors.yellow,)),
+                    children: List.generate(
+                        5,
+                        (index) => Icon(
+                              Icons.star,
+                              color: (index + 1 <= review['rate'])
+                                  ? Colors.yellow
+                                  : null,
+                            )),
                   ),
                   SizedBox(height: 8),
-                  Text(
-                    'Ngon',
-                    style: TextStyle(
-                      fontSize: 12,
+                  Container(
+                    width: 216,
+                    child: Text(
+                      review['review'],
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

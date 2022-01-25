@@ -24,13 +24,20 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    list_item_ = FetchRandomItem();
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
       if (mounted) {
         setState(() {
           list_item_ = FetchRandomItem();
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   final _top_contributor = [

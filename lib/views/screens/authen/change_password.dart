@@ -11,9 +11,9 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final _oldPassword = new TextEditingController();
-  final _newPassword = new TextEditingController();
-  final _confirmPassword = new TextEditingController();
+  final _oldPassword = new TextEditingController(text: "");
+  final _newPassword = new TextEditingController(text: "");
+  final _confirmPassword = new TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +45,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               icon: Icons.shield,
               onChanged: (value) {},
               controller: _oldPassword,
+              isCheck: true,
             ),
             SizedBox(height: 24),
             RoundedInputField(
@@ -52,6 +53,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               icon: Icons.lock,
               onChanged: (value) {},
               controller: _newPassword,
+              isCheck: true,
             ),
             SizedBox(height: 24),
             RoundedInputField(
@@ -59,6 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               icon: Icons.lock,
               onChanged: (value) {},
               controller: _confirmPassword,
+              isCheck: true,
             ),
             SizedBox(height: 40),
             Container(

@@ -1,3 +1,5 @@
+import 'package:flashare/views/screens/upload/item_request.dart';
+import 'package:flashare/views/screens/profile/other_profile.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flashare/views/widgets/image_border.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,9 @@ class ItemRequestBox extends StatelessWidget {
   final String description;
   final String imgUser;
   final String nameUser;
-  final Function()? onTap;
+  final String userId;
+  final String itemId;
+  final bool? isSent;
 
   const ItemRequestBox({
     Key? key,
@@ -20,13 +24,25 @@ class ItemRequestBox extends StatelessWidget {
     required this.name,
     required this.imgUser,
     required this.nameUser,
-    this.onTap,
+    required this.userId,
+    required this.itemId,
+    this.isSent,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (isSent == null)
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ItemRequestScreen(
+              itemUrl: imgUrl,
+              category: category,
+              itemName: name,
+              itemId: itemId,
+            );
+          }));
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
@@ -38,7 +54,9 @@ class ItemRequestBox extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.all(16),
+                height: 140,
+                width: double.infinity,
+                padding: EdgeInsets.all(12),
                 child: ImageBorder(image: Image.network(imgUrl)),
               ),
             ),
@@ -47,7 +65,7 @@ class ItemRequestBox extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.fromLTRB(4, 16, 8, 16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -60,7 +78,7 @@ class ItemRequestBox extends StatelessWidget {
                           fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
-                      height: 4,
+                      height: 8,
                     ),
                     Text(
                       description,
@@ -72,19 +90,29 @@ class ItemRequestBox extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        AvatarCircle(imgUrl: imgUser, radius: 12),
-                        SizedBox(width: 8),
-                        Text(
-                          nameUser,
-                          style: TextStyle(
-                            fontSize: 12,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OtherProfileScreen(userId: userId)),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AvatarCircle(imgUrl: imgUser, radius: 12),
+                          SizedBox(width: 8),
+                          Text(
+                            nameUser,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 24)
-                      ],
+                          SizedBox(width: 24)
+                        ],
+                      ),
                     ),
                   ],
                 ),

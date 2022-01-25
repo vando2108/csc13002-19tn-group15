@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
 
-  final _name_controller = new TextEditingController();
-  final _email_controller = new TextEditingController();
-  final _password_controller = new TextEditingController();
+  final _name_controller = new TextEditingController(text: "");
+  final _email_controller = new TextEditingController(text: "");
+  final _password_controller = new TextEditingController(text: "");
   final _form_key = GlobalKey<FormState>();
 
   @override
@@ -116,6 +116,7 @@ class SignUp extends StatelessWidget {
                         hintText: "Passwod",
                         icon: Icons.lock,
                         controller: _password_controller,
+                        isCheck: true,
                       ),
                       const SizedBox(
                         height: 12,

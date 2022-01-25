@@ -1,8 +1,8 @@
-import 'package:flashare/views/screens/change_password.dart';
+import 'package:flashare/views/screens/authen/change_password.dart';
 import 'package:flashare/views/screens/main_tab_bar.dart';
-import 'package:flashare/views/screens/request_sent.dart';
-import 'package:flashare/views/screens/review_screen.dart';
-import 'package:flashare/views/screens/upload_item.dart';
+import 'package:flashare/views/screens/upload/request_sent.dart';
+import 'package:flashare/views/screens/profile/review_screen.dart';
+import 'package:flashare/views/screens/upload/upload_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +53,6 @@ class MainScreen extends StatelessWidget {
         '/upload_item': (context) => const UploadItemScreen(),
         '/my_request': (context) => const RequestSentScreen(),
         '/change_password': (context) => const ChangePasswordScreen(),
-        '/review': (context) => const ReviewScreen(),
       },
     );
   }
