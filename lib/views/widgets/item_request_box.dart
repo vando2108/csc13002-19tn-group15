@@ -15,6 +15,7 @@ class ItemRequestBox extends StatelessWidget {
   final String userId;
   final String itemId;
   final bool? isSent;
+  final bool? isAccept;
 
   const ItemRequestBox({
     Key? key,
@@ -27,6 +28,7 @@ class ItemRequestBox extends StatelessWidget {
     required this.userId,
     required this.itemId,
     this.isSent,
+    this.isAccept,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class ItemRequestBox extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          color: Color.fromRGBO(239, 238, 238, 1),
+          color: isAccept != null ? Colors.green : Color.fromRGBO(239, 238, 238, 1),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

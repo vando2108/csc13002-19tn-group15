@@ -138,6 +138,9 @@ class _RequestSentScreenState extends State<RequestSentScreen>
               children: List.generate(data[1].length, (index) {
                 var item = data[1][index]['item'];
                 var user = data[1][index]['sender'];
+                print('-------------VAILOZZZZZ------');
+                print(data[1][index]['request']['status']);
+                print('------------------VAICACCCCC-----');
                 return Column(
                   children: [
                     ItemRequestBox(
@@ -153,7 +156,10 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                       nameUser: user['name'] ?? 'Cristiano Ronaldo',
                       userId: user['id'] ?? '',
                       itemId: item['id'],
-                      isSent: true,
+                      isAccept:
+                          (data[1][index]['request']['status'] == "accepted")
+                              ? true
+                              : null,
                     ),
                     SizedBox(height: 10),
                   ],
