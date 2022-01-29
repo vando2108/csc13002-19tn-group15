@@ -1,4 +1,5 @@
 import 'package:flashare/controller/upload_controller.dart';
+import 'package:flashare/views/screens/chat/chat_screen.dart';
 import 'package:flashare/views/screens/profile/other_profile.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,8 +93,7 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         onPressed: () async {
-          List res =
-              await UploadController().markItemAsSent(itemId: widget.itemId);
+          List res = await UploadController().markItemAsSent(itemId: widget.itemId);
           if (res[0] == true) {
             _showDialog(message: "Đánh dấu thành công.");
           } else {
@@ -137,18 +137,15 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
                 children: List<Widget>.generate(data.length, (index) {
                   // children: List<Widget>.generate(20, (indexx) {
                   //   int index = indexx % 2;
-                  if (data[index]['request']['status'] == "cancelled")
-                    return Container();
+                  if (data[index]['request']['status'] == "cancelled") return Container();
                   return Column(
                     children: [
                       Container(
                         height: 60,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.0),
-                          color: (data[index]['request']['status'] ==
-                                      "archieved" ||
-                                  data[index]['request']['status'] ==
-                                      "accepted")
+                          color: (data[index]['request']['status'] == "archieved" ||
+                                  data[index]['request']['status'] == "accepted")
                               ? Colors.green
                               : Color.fromRGBO(239, 238, 238, 1),
                         ),
@@ -161,19 +158,15 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              OtherProfileScreen(
-                                                  userId: data[index]['sender']
-                                                      ['id'])));
+                                          builder: (context) => OtherProfileScreen(
+                                              userId: data[index]['sender']['id'])));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     SizedBox(width: 16),
                                     AvatarCircle(
-                                        imgUrl: data[index]['sender']
-                                            ['avatar_link'],
-                                        radius: 17),
+                                        imgUrl: data[index]['sender']['avatar_link'], radius: 17),
                                     SizedBox(width: 8),
                                     Text(
                                       data[index]['sender']['name'],
@@ -192,16 +185,19 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
                                     InkResponse(
                                       onTap: () async {
                                         List res = await UploadController()
-                                            .acceptRequest(
-                                                requestId: data[index]
-                                                    ['request']['id']);
+                                            .acceptRequest(requestId: data[index]['request']['id']);
                                         if (res[0] == true) {
                                           setState(() {
                                             response = UploadController()
-                                                .getListRequest(
-                                                    itemId: widget.itemId);
+                                                .getListRequest(itemId: widget.itemId);
                                           });
-                                          // TODO: link to chat userid data[index]['id'], nhớ có nút pop(context) để quay lại cái request
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) {
+                                            return ChatScreen(
+                                              receiver: data[index]['sender']['id'],
+                                              receiver_name: data[index]['sender']['name'],
+                                            );
+                                          }));
                                         } else {
                                           _showDialog(message: res[1]);
                                         }
@@ -223,12 +219,9 @@ class _ItemRequestScreenState extends State<ItemRequestScreen> {
                                     InkResponse(
                                       onTap: () async {
                                         List res = await UploadController()
-                                            .cancelRequest(
-                                                requestId: data[index]
-                                                    ['request']['id']);
+                                            .cancelRequest(requestId: data[index]['request']['id']);
                                         if (res[0] == true) {
-                                          _showDialog(
-                                              message: "Từ chối thành công.");
+                                          _showDialog(message: "Cancel successfully");
                                         } else {
                                           _showDialog(message: res[1]);
                                         }

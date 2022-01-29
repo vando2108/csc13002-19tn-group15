@@ -34,12 +34,12 @@ class _ProfileTabState extends State<ProfileTab> {
     super.initState();
     data = ProfileController().getProfile();
     dataReview = ReviewController().getReview();
-    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-      setState(() {
-        data = ProfileController().getProfile();
-        dataReview = ReviewController().getReview();
-      });
-    });
+    // timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    //   setState(() {
+    //     data = ProfileController().getProfile();
+    //     dataReview = ReviewController().getReview();
+    //   });
+    // });
   }
 
   @override
@@ -67,7 +67,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   children: [
                     Center(
                       child: Text(
-                        'Thông tin của tôi',
+                        'My profile',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -105,9 +105,7 @@ class _ProfileTabState extends State<ProfileTab> {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateAvatarScreen()));
+                  context, MaterialPageRoute(builder: (context) => UpdateAvatarScreen()));
             },
             child: AvatarCircle(
               imgUrl: avatar ??
@@ -163,7 +161,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               )));
                 },
                 child: Text(
-                  '${listReview.length} đánh giá',
+                  '${listReview.length} reviews',
                   style: TextStyle(
                     color: Color.fromRGBO(66, 133, 244, 1),
                     fontSize: 14,
@@ -176,8 +174,7 @@ class _ProfileTabState extends State<ProfileTab> {
         });
   }
 
-  Widget _renderInformation(
-      {String? email, String? phoneNumber, String? address}) {
+  Widget _renderInformation({String? email, String? phoneNumber, String? address}) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +218,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Icon(CupertinoIcons.location, color: Colors.black),
               SizedBox(width: 12),
               Text(
-                address ?? '227 Đ.Nguyễn Văn Cừ, Phường 4, Q.5, TP.HCM',
+                address ?? '227 Đ.Nguyen Van Cu, Phuong 4, Q.5, TP.HCM',
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -239,7 +236,7 @@ class _ProfileTabState extends State<ProfileTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Cài đặt',
+            'Settings',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -249,12 +246,10 @@ class _ProfileTabState extends State<ProfileTab> {
           _buttonBox(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateProfileScreen()));
+                  context, MaterialPageRoute(builder: (context) => UpdateProfileScreen()));
             },
             icon: Icons.person,
-            action: 'Thay đổi thông tin cá nhân',
+            action: 'Update Profile',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
@@ -264,7 +259,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Navigator.pushNamed(context, '/change_password');
             },
             icon: Icons.security,
-            action: 'Thay đổi mật khẩu',
+            action: 'Change Password',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
@@ -274,7 +269,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Navigator.pushNamed(context, '/my_request');
             },
             icon: Icons.storage,
-            action: 'Yêu cầu của tôi',
+            action: 'My request',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
@@ -282,12 +277,9 @@ class _ProfileTabState extends State<ProfileTab> {
           _buttonBox(
             onPressed: () {
               Navigator.of(context).pop();
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => new SignIn()));
-              // Navigator.pop(context);
             },
             icon: Icons.exit_to_app,
-            action: 'Đăng xuất',
+            action: 'Logout',
             color: Color(0xff395185),
             background: Color.fromRGBO(218, 218, 218, 0.5),
           ),

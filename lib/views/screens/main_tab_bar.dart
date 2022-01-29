@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flashare/views/screens/chat/chat_tab.dart';
@@ -15,12 +16,12 @@ class MainTabBar extends StatefulWidget {
   _MainTabBarState createState() => _MainTabBarState();
 }
 
-class _MainTabBarState extends State<MainTabBar>
-    with SingleTickerProviderStateMixin {
+class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late TabController _tabController;
   late List<Widget> _myTabs;
   int _currentTab = 0;
+  GlobalKey<NavigatorState> _key = GlobalKey();
 
   @override
   void initState() {
@@ -43,41 +44,68 @@ class _MainTabBarState extends State<MainTabBar>
     super.dispose();
   }
 
+  late DateTime _lastQuitTime;
+
   @override
   Widget build(BuildContext context) {
     AppSize.config(context);
-    return Scaffold(
-      extendBody: true,
-      bottomNavigationBar: Container(
-        color: Color(0xffF0F6FF),
-        height: 60,
-        child: TabBar(
-          indicatorSize: TabBarIndicatorSize.label,
-          labelPadding: EdgeInsets.all(0),
-          indicatorColor: Colors.transparent,
-          controller: _tabController,
-          tabs: [
-            _buildTabBarItem(0, 'Trang chủ', Icons.home_outlined),
-            _buildTabBarItem(1, 'Nhắn tin', Icons.chat_bubble),
-            _buildTabBarItem(2, 'Tải lên', Icons.book),
-            _buildTabBarItem(3, 'Cá nhân', Icons.person),
-          ],
-          onTap: (index) {},
-        ),
-      ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          IndexedStack(
-            index: _currentTab,
-            children: const [
-              Home(),
-              ChatTab(),
-              UploadTab(),
-              ProfileTab(),
+    return WillPopScope(
+      onWillPop: () async {
+        if (_tabController.index == 0) {
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(title: Text('Are you sure you want to quit?'), actions: <Widget>[
+                    RaisedButton(
+                        child: Text('Continue'),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        }),
+                    RaisedButton(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        }),
+                  ]));
+          return false;
+        } else {
+          _tabController.animateTo(0);
+          return false;
+        }
+      },
+      child: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: Container(
+          color: Color(0xffF0F6FF),
+          height: 60,
+          child: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
+            labelPadding: EdgeInsets.all(0),
+            indicatorColor: Colors.transparent,
+            controller: _tabController,
+            tabs: [
+              _buildTabBarItem(0, 'Home', Icons.home_outlined),
+              _buildTabBarItem(1, 'Chat', Icons.chat_bubble),
+              _buildTabBarItem(2, 'Upload', Icons.book),
+              _buildTabBarItem(3, 'Profile', Icons.person),
             ],
+            onTap: (index) {},
           ),
-        ],
+        ),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            IndexedStack(
+              index: _currentTab,
+              children: const [
+                Home(),
+                ChatTab(),
+                UploadTab(),
+                ProfileTab(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

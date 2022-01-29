@@ -25,13 +25,13 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     list_item_ = FetchRandomItem();
-    timer = Timer.periodic(Duration(seconds: 30), (timer) {
-      if (mounted) {
-        setState(() {
-          list_item_ = FetchRandomItem();
-        });
-      }
-    });
+    // timer = Timer.periodic(Duration(seconds: 100), (timer) {
+    //   if (mounted) {
+    //     setState(() {
+    //       list_item_ = FetchRandomItem();
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -41,22 +41,10 @@ class _HomeState extends State<Home> {
   }
 
   final _top_contributor = [
-    {
-      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
-      "Ha Minh"
-    },
-    {
-      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
-      "Duc Tu"
-    },
-    {
-      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
-      "Xuan Dang"
-    },
-    {
-      "https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg",
-      "Trung Hieu"
-    }
+    {"https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg", "Ha Minh"},
+    {"https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg", "Duc Tu"},
+    {"https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg", "Xuan Dang"},
+    {"https://anhdep123.com/wp-content/uploads/2021/02/anh-avatar-hai-huoc.jpg", "Trung Hieu"}
   ];
 
   @override
@@ -77,8 +65,7 @@ class _HomeState extends State<Home> {
           const AnnounceWidget(
             imgPath: "https://www.hcmus.edu.vn/images/2020/04/07/bn2.jpg",
             title: "HCMUS Donation Event",
-            sub_title:
-                "The clothing donation event will be organize on November 21 at HCMUS ",
+            sub_title: "The clothing donation event will be organize on November 21 at HCMUS ",
           ),
           GroupText("Categories"),
           const SizedBox(
@@ -272,9 +259,7 @@ class CategorieCard extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                Text(title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 9))
+                Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 9))
               ],
             ),
           ),

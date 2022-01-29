@@ -5,7 +5,7 @@ import 'package:flashare/models/item.dart';
 import 'package:flashare/models/user.dart';
 import 'package:flashare/utils/user_storage.dart';
 import 'package:flashare/views/screens/body.dart';
-import 'package:flashare/views/screens/chat/char_screen.dart';
+import 'package:flashare/views/screens/chat/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flashare/models/api.dart';
 import 'package:flashare/providers/fetch_list_contact.dart';
 import 'package:flashare/utils/user_storage.dart';
-import 'package:flashare/views/screens/chat/char_screen.dart';
+import 'package:flashare/views/screens/chat/chat_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -24,13 +24,13 @@ class _ChatTabState extends State<ChatTab> {
   void initState() {
     // TODO: implement initState
     list_contact_ = FetchListContact();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
-      if (mounted) {
-        setState(() {
-          list_contact_ = FetchListContact();
-        });
-      }
-    });
+    // timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    //   if (mounted) {
+    //     setState(() {
+    //       list_contact_ = FetchListContact();
+    //     });
+    //   }
+    // });
     super.initState();
   }
 

@@ -35,7 +35,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                   ),
                   SizedBox(width: 88),
                   Text(
-                    'Đánh giá',
+                    'Review',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
         },
         controller: _textController,
         decoration: InputDecoration(
-          hintText: 'Đánh giá',
+          hintText: 'write review',
           border: InputBorder.none,
         ),
       ),
@@ -134,7 +134,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           if (response[0] == false) {
             _showDialog(message: response[1]);
           } else {
-            _showDialog(message: "Thêm đánh giá thành công.");
+            _showDialog(message: "Add review successfully.");
           }
         },
         child: Text(

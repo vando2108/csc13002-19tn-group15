@@ -1,4 +1,5 @@
 import 'package:flashare/views/screens/authen/change_password.dart';
+import 'package:flashare/views/screens/authen/signin.dart';
 import 'package:flashare/views/screens/main_tab_bar.dart';
 import 'package:flashare/views/screens/upload/request_sent.dart';
 import 'package:flashare/views/screens/profile/review_screen.dart';
@@ -47,8 +48,9 @@ class MainScreen extends StatelessWidget {
           fontFamily: GoogleFonts.roboto().fontFamily,
         ),
       ),
-      initialRoute: '/home',
+      initialRoute: '/signin',
       routes: {
+        '/signin': (context) => SignIn(),
         '/home': (context) => const MainTabBar(),
         '/upload_item': (context) => const UploadItemScreen(),
         '/my_request': (context) => const RequestSentScreen(),

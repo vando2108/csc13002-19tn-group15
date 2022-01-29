@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
       ),
-      home: SignIn(),
+      home: MainScreen(),
     );
   }
 }

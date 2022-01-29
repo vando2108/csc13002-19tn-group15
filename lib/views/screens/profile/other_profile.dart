@@ -1,6 +1,7 @@
 import 'package:flashare/controller/profile_controller.dart';
 import 'package:flashare/controller/review_controller.dart';
 import 'package:flashare/models/user.dart';
+import 'package:flashare/views/screens/chat/chat_screen.dart';
 import 'package:flashare/views/screens/profile/add_review_screen.dart';
 import 'package:flashare/views/screens/profile/review_screen.dart';
 import 'package:flashare/views/widgets/avatar_circle.dart';
@@ -54,7 +55,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                         ),
                         SizedBox(width: 40),
                         Text(
-                          'Thông tin cá nhân',
+                          'Profile',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                               )));
                 },
                 child: Text(
-                  '${listReview.length} đánh giá',
+                  '${listReview.length} reviews',
                   style: TextStyle(
                     color: Color.fromRGBO(66, 133, 244, 1),
                     fontSize: 14,
@@ -163,7 +164,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Thông tin',
+            'Profile',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -201,7 +202,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
               Icon(CupertinoIcons.location, color: Colors.black),
               SizedBox(width: 12),
               Text(
-                address ?? '227 Đ.Nguyễn Văn Cừ, Phường 4, Q.5, TP.HCM',
+                address ?? '227 Đ.Nguyen Van Cu, Phuong 4, Q.5, TP.HCM',
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -219,7 +220,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Cài đặt',
+            'Settings',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -236,14 +237,20 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                           )));
             },
             icon: Icons.person,
-            action: 'Đánh giá',
+            action: 'Add review',
             color: Colors.white,
             background: Color(0xff4285F4),
           ),
           SizedBox(height: 20),
           _buttonBox(
             onPressed: () {
-              // TODO: link toi chat vs id la widget.userId
+              Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ChatScreen(
+                            receiver: sender.ID,
+                            receiver_name: sender.Name,
+                          );
+                        }));
             },
             icon: Icons.person,
             action: 'Chat',

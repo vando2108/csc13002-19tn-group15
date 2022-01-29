@@ -17,8 +17,8 @@ class UploadItemScreen extends StatefulWidget {
 }
 
 class _UploadItemScreenState extends State<UploadItemScreen> {
-  List<String> categories = ['Áo quần', 'Đồ gia dụng', 'Thức ăn'];
-  String dropdownValue = 'Áo quần';
+  List<String> categories = ['Clothes', 'Houseware', 'Food'];
+  String dropdownValue = 'Clothes';
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   DateTime selectedDate = DateTime.now();
@@ -46,7 +46,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                   ),
                   SizedBox(width: 60),
                   Text(
-                    'Tải lên vật phẩm',
+                    'Upload item',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -56,7 +56,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               ),
               SizedBox(height: 36),
               RoundedInputField(
-                hintText: 'Tên vật phẩm',
+                hintText: 'Item name',
                 icon: Icons.food_bank,
                 controller: _nameText,
               ),
@@ -89,12 +89,12 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         onPressed: () async {
-          String category = "clothes";
-          if (dropdownValue == "Đồ gia dụng") category = "houseware";
-          if (dropdownValue == "Thức ăn") category = "food";
+          // String category = "clothes";
+          // if (dropdownValue == "Đồ gia dụng") category = "houseware";
+          // if (dropdownValue == "Thức ăn") category = "food";
           List response = await UploadController().uploadItem(
             name: _nameText.text,
-            category: category,
+            category: dropdownValue,
             photosBase64: [_base64Image],
             description: _descriptionText.text,
             dueDate: selectedDate,
@@ -103,11 +103,11 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           if (response[0] == false) {
             _showDialog(message: response[1]);
           } else {
-            _showDialog(message: "Tải lên vật phẩm thành công.");
+            _showDialog(message: "Upload item successfully.", isCheck: true);
           }
         },
         child: Text(
-          'Tải lên',
+          'Upload',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -142,7 +142,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
             ),
             child: MaterialButton(
               onPressed: () => _selectDate(context),
-              child: Text('Hạn sử dụng'),
+              child: Text('Due date'),
             ),
           ),
           SizedBox(width: 36),
@@ -173,7 +173,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         maxLines: 6,
         onChanged: (value) {},
         decoration: InputDecoration(
-          hintText: 'Mô tả',
+          hintText: 'Description',
           border: InputBorder.none,
         ),
         controller: _descriptionText,
@@ -200,8 +200,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                 )
               : Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8)),
+                      color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
                   width: 100,
                   height: 100,
                   child: Icon(
@@ -224,7 +223,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               children: <Widget>[
                 new ListTile(
                   leading: new Icon(Icons.photo_library),
-                  title: new Text('Ảnh từ thư viện'),
+                  title: new Text('Image from gallery'),
                   onTap: () {
                     _imgFromGallery();
                     // Navigator.of(context).pop();
@@ -232,7 +231,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                 ),
                 new ListTile(
                   leading: new Icon(Icons.photo_camera),
-                  title: new Text('Chụp ảnh'),
+                  title: new Text('Capture'),
                   onTap: () {
                     _imgFromCamera();
                     Navigator.of(context).pop();
@@ -247,8 +246,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   }
 
   _imgFromCamera() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     List<int> imageBytes = await image!.readAsBytes();
     _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
     setState(() {
@@ -257,8 +255,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   }
 
   _imgFromGallery() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     List<int> imageBytes = await File(image!.path).readAsBytes();
     _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
     setState(() {
@@ -279,7 +276,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           Icon(Icons.category),
           const SizedBox(width: 20),
           DropdownButton(
-            hint: Text('Loại vật phẩm'),
+            hint: Text('Category'),
             value: dropdownValue,
             icon: Icon(Icons.keyboard_arrow_down),
             items: categories.map((String items) {
@@ -299,7 +296,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
     );
   }
 
-  _showDialog({required String message}) {
+  _showDialog({required String message, bool? isCheck}) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -309,6 +306,9 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    if (isCheck != null) {
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text("Close"))
             ],

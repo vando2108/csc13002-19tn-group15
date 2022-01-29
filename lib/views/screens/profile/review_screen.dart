@@ -32,7 +32,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         ),
                         SizedBox(width: 60),
                         Text(
-                          'Các đánh giá',
+                          'Reviews',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

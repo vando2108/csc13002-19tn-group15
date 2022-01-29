@@ -37,7 +37,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 SizedBox(width: 40),
                 Text(
-                  'Thay đổi thông tin',
+                  'Update profile',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -47,21 +47,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             ),
             SizedBox(height: 48),
             RoundedInputField(
-              hintText: 'Tên',
+              hintText: 'Name',
               icon: Icons.person,
               onChanged: (value) {},
               controller: _newName,
             ),
             SizedBox(height: 24),
             RoundedInputField(
-              hintText: 'Số điện thoại',
+              hintText: 'Phone number',
               icon: Icons.phone,
               onChanged: (value) {},
               controller: _newPhone,
             ),
             SizedBox(height: 24),
             RoundedInputField(
-              hintText: 'Địa chỉ',
+              hintText: 'Address',
               icon: CupertinoIcons.location,
               onChanged: (value) {},
               controller: _newAddress,
@@ -88,7 +88,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   if (response[0] == false) {
                     _showDialog(message: response[1]);
                   } else {
-                    _showDialog(message: "Cập nhật thành công.");
+                    _showDialog(message: "Update successfully");
                   }
                 },
                 child: Text(

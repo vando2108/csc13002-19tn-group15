@@ -34,11 +34,11 @@ class _UploadTabState extends State<UploadTab>
       });
     });
     dataItem = UploadController().getItemUpload();
-    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-      setState(() {
-        dataItem = UploadController().getItemUpload();
-      });
-    });
+    // timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    //   setState(() {
+    //     dataItem = UploadController().getItemUpload();
+    //   });
+    // });
   }
 
   @override
@@ -62,7 +62,7 @@ class _UploadTabState extends State<UploadTab>
                 // _searchBar(),
                 Center(
                   child: Text(
-                    'Vật phẩm tải lên',
+                    'Upload tab',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -76,8 +76,8 @@ class _UploadTabState extends State<UploadTab>
                   indicatorPadding:
                       const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
-                    Tab(text: 'Đã đăng'),
-                    Tab(text: 'Đã gửi'),
+                    Tab(text: 'Posted'),
+                    Tab(text: 'Sent'),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -101,7 +101,7 @@ class _UploadTabState extends State<UploadTab>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
-            hintText: "Tìm kiếm",
+            hintText: "Search",
             icon: Icons.search,
             onChanged: (value) {},
           ),
