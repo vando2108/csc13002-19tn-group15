@@ -34,11 +34,11 @@ class _UploadTabState extends State<UploadTab>
       });
     });
     dataItem = UploadController().getItemUpload();
-    // timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-    //   setState(() {
-    //     dataItem = UploadController().getItemUpload();
-    //   });
-    // });
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+      setState(() {
+        dataItem = UploadController().getItemUpload();
+      });
+    });
   }
 
   @override

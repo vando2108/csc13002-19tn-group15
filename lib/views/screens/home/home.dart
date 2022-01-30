@@ -22,16 +22,15 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     list_item_ = FetchRandomItem();
-    // timer = Timer.periodic(Duration(seconds: 100), (timer) {
-    //   if (mounted) {
-    //     setState(() {
-    //       list_item_ = FetchRandomItem();
-    //     });
-    //   }
-    // });
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      if (mounted) {
+        setState(() {
+          list_item_ = FetchRandomItem();
+        });
+      }
+    });
   }
 
   @override
@@ -77,17 +76,17 @@ class _HomeState extends State<Home> {
               CategorieCard(
                 iconPath: "assets/fork.png",
                 title: "Food",
-                category: "food",
+                category: "Food",
               ),
               CategorieCard(
                 iconPath: "assets/tshirt.png",
                 title: "Clothes",
-                category: "clothes",
+                category: "Clothes",
               ),
               CategorieCard(
                 iconPath: "assets/electronics.png",
                 title: "Houseware",
-                category: "houseware",
+                category: "Houseware",
               ),
               CategorieCard(
                 iconPath: "assets/more.png",

@@ -3,12 +3,20 @@ import 'package:flashare/views/widgets/rounded_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({Key? key}) : super(key: key);
 
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   final _name_controller = new TextEditingController(text: "");
+
   final _email_controller = new TextEditingController(text: "");
+
   final _password_controller = new TextEditingController(text: "");
+
   final _form_key = GlobalKey<FormState>();
 
   @override
@@ -159,7 +167,7 @@ class SignUp extends StatelessWidget {
                                                     _email_controller.text = "";
                                                     _password_controller.text = "";
                                                     _name_controller.text = "";
-                                                    Navigator.pop(context);
+                                                    // Navigator.pop(context);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text("Close"))

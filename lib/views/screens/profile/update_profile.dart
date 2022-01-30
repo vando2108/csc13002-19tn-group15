@@ -92,7 +92,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   }
                 },
                 child: Text(
-                  'Lưu thay đổi',
+                  'Save',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

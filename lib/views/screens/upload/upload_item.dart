@@ -44,7 +44,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
                     },
                     icon: Icon(CupertinoIcons.back),
                   ),
-                  SizedBox(width: 60),
+                  SizedBox(width: 80),
                   Text(
                     'Upload item',
                     style: TextStyle(
@@ -306,9 +306,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    if (isCheck != null) {
-                      Navigator.pop(context);
-                    }
                   },
                   child: Text("Close"))
             ],

@@ -35,9 +35,9 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                   },
                   icon: Icon(CupertinoIcons.back),
                 ),
-                SizedBox(width: 48),
+                SizedBox(width: 60),
                 Text(
-                  'Thay đổi Avatar',
+                  'Change Avatar',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -59,16 +59,15 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 onPressed: () async {
-                  List response = await ProfileController()
-                      .updateAvatar(avatar: _base64Image);
+                  List response = await ProfileController().updateAvatar(avatar: _base64Image);
                   if (response[0] == false) {
                     _showDialog(message: response[1]);
                   } else {
-                    _showDialog(message: "Cập nhật thành công.");
+                    _showDialog(message: "Change successfully.");
                   }
                 },
                 child: Text(
-                  'Lưu thay đổi',
+                  'Save',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -102,8 +101,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                 )
               : Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8)),
+                      color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
                   width: 160,
                   height: 160,
                   child: Icon(
@@ -126,7 +124,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
               children: <Widget>[
                 new ListTile(
                   leading: new Icon(Icons.photo_library),
-                  title: new Text('Ảnh từ thư viện'),
+                  title: new Text('Image from gallery'),
                   onTap: () {
                     _imgFromGallery();
                     // Navigator.of(context).pop();
@@ -134,7 +132,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                 ),
                 new ListTile(
                   leading: new Icon(Icons.photo_camera),
-                  title: new Text('Chụp ảnh'),
+                  title: new Text('Capture'),
                   onTap: () {
                     _imgFromCamera();
                     Navigator.of(context).pop();
@@ -149,8 +147,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
   }
 
   _imgFromCamera() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     List<int> imageBytes = await image!.readAsBytes();
     _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
     setState(() {
@@ -159,8 +156,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
   }
 
   _imgFromGallery() async {
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     List<int> imageBytes = await File(image!.path).readAsBytes();
     _base64Image = "data:image/png;base64," + base64Encode(imageBytes);
     setState(() {

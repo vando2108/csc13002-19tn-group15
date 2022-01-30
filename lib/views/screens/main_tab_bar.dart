@@ -44,8 +44,6 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  late DateTime _lastQuitTime;
-
   @override
   Widget build(BuildContext context) {
     AppSize.config(context);
@@ -59,6 +57,7 @@ class _MainTabBarState extends State<MainTabBar> with SingleTickerProviderStateM
                     RaisedButton(
                         child: Text('Continue'),
                         onPressed: () {
+                          exit(0);
                           Navigator.of(context).pop(true);
                         }),
                     RaisedButton(

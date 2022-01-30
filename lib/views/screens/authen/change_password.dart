@@ -31,7 +31,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 SizedBox(width: 40),
                 Text(
-                  'Thay đổi mật khẩu',
+                  'Change Password',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -41,7 +41,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             SizedBox(height: 48),
             RoundedInputField(
-              hintText: 'Mật khẩu hiện tại',
+              hintText: 'Current password',
               icon: Icons.shield,
               onChanged: (value) {},
               controller: _oldPassword,
@@ -49,7 +49,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             SizedBox(height: 24),
             RoundedInputField(
-              hintText: 'Mật khẩu mới',
+              hintText: 'New password',
               icon: Icons.lock,
               onChanged: (value) {},
               controller: _newPassword,
@@ -57,7 +57,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             SizedBox(height: 24),
             RoundedInputField(
-              hintText: 'Nhập lại mật khẩu mới',
+              hintText: 'Confirm new password',
               icon: Icons.lock,
               onChanged: (value) {},
               controller: _confirmPassword,
@@ -79,22 +79,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   String oldPassword = _oldPassword.text;
                   String confirmPassword = _confirmPassword.text;
                   if (newPassword != confirmPassword) {
-                    _showDialog(message: "Xác nhận mật khẩu sai.");
+                    _showDialog(message: "Wrong confirm new password.");
                   } else {
-                    List response =
-                        await AuthenticationController().changePassword(
+                    List response = await AuthenticationController().changePassword(
                       oldPassword: oldPassword,
                       newPassword: newPassword,
                     );
                     if (response[0] == false) {
                       _showDialog(message: response[1]);
                     } else {
-                      _showDialog(message: "Đổi mật khẩu thành công.");
+                      _showDialog(message: "Change password successfully.");
                     }
                   }
                 },
                 child: Text(
-                  'Lưu thay đổi',
+                  'Save',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

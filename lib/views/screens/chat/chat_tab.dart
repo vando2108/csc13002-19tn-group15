@@ -24,13 +24,13 @@ class _ChatTabState extends State<ChatTab> {
   void initState() {
     // TODO: implement initState
     list_contact_ = FetchListContact();
-    // timer = Timer.periodic(Duration(seconds: 10), (timer) {
-    //   if (mounted) {
-    //     setState(() {
-    //       list_contact_ = FetchListContact();
-    //     });
-    //   }
-    // });
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      if (mounted) {
+        setState(() {
+          list_contact_ = FetchListContact();
+        });
+      }
+    });
     super.initState();
   }
 

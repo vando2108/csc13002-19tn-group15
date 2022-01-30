@@ -15,8 +15,7 @@ class RequestSentScreen extends StatefulWidget {
   _RequestSentScreenState createState() => _RequestSentScreenState();
 }
 
-class _RequestSentScreenState extends State<RequestSentScreen>
-    with SingleTickerProviderStateMixin {
+class _RequestSentScreenState extends State<RequestSentScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentTab = 0;
   late Future<List> dataPending;
@@ -67,7 +66,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                     ),
                     SizedBox(width: 60),
                     Text(
-                      'Yêu cầu của tôi',
+                      'My requests',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -82,12 +81,11 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                   controller: _tabController,
                   indicatorColor: const Color(0xff4285F4),
                   indicatorWeight: 2,
-                  indicatorPadding:
-                      const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+                  indicatorPadding: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                   tabs: const [
-                    Tab(text: 'Chờ xử lý'),
-                    Tab(text: 'Đã nhận'),
-                    Tab(text: 'Từ chối')
+                    Tab(text: 'Pending'),
+                    Tab(text: 'Archieved'),
+                    Tab(text: 'Cancelled')
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -111,8 +109,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RoundedInputField(
-              hintText: "Tìm kiếm", icon: Icons.search, onChanged: (value) {}),
+          RoundedInputField(hintText: "Search", icon: Icons.search, onChanged: (value) {}),
         ],
       ),
     );
@@ -153,10 +150,7 @@ class _RequestSentScreenState extends State<RequestSentScreen>
                       nameUser: user['name'] ?? 'Cristiano Ronaldo',
                       userId: user['id'] ?? '',
                       itemId: item['id'],
-                      isAccept:
-                          (data[1][index]['request']['status'] == "accepted")
-                              ? true
-                              : null,
+                      isAccept: (data[1][index]['request']['status'] == "accepted") ? true : null,
                     ),
                     SizedBox(height: 10),
                   ],

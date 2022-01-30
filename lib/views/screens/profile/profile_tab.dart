@@ -34,12 +34,12 @@ class _ProfileTabState extends State<ProfileTab> {
     super.initState();
     data = ProfileController().getProfile();
     dataReview = ReviewController().getReview();
-    // timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-    //   setState(() {
-    //     data = ProfileController().getProfile();
-    //     dataReview = ReviewController().getReview();
-    //   });
-    // });
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+      setState(() {
+        data = ProfileController().getProfile();
+        dataReview = ReviewController().getReview();
+      });
+    });
   }
 
   @override

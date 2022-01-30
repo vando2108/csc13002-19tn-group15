@@ -7,6 +7,8 @@ import 'package:flashare/views/screens/upload/upload_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'authen/signup.dart';
+
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -51,6 +53,7 @@ class MainScreen extends StatelessWidget {
       initialRoute: '/signin',
       routes: {
         '/signin': (context) => SignIn(),
+        '/signup': (context) => SignUp(),
         '/home': (context) => const MainTabBar(),
         '/upload_item': (context) => const UploadItemScreen(),
         '/my_request': (context) => const RequestSentScreen(),

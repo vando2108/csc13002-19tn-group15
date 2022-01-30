@@ -25,6 +25,7 @@ class _ListItemByCategoryState extends State<ListItemByCategory> {
 
   @override
   void initState() {
+    // list_item_ = FetchItemByCategory(widget.category);
     timer = Timer.periodic(Duration(seconds: 2), (timer) {
       if (mounted) {
         setState(() {
@@ -33,6 +34,12 @@ class _ListItemByCategoryState extends State<ListItemByCategory> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -51,6 +58,8 @@ class _ListItemByCategoryState extends State<ListItemByCategory> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   ApiResponse temp = snapshot.data as ApiResponse;
+                  print("-----LIST ITEM CATEGORY----");
+                  print(temp.Data);
                   if (temp.Sucess == false) {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -68,8 +77,7 @@ class _ListItemByCategoryState extends State<ListItemByCategory> {
                       return GestureDetector(
                         onTap: () {
                           Item item = Item.fromJson(temp.Data[index]);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return ItemDetail(item: item);
                           }));
                         },
@@ -195,8 +203,7 @@ class Header extends StatelessWidget {
               width: size.width * 0.75,
               height: 50,
               decoration: BoxDecoration(
-                  color: const Color(0xffEFEEEE),
-                  borderRadius: BorderRadius.circular(15)),
+                  color: const Color(0xffEFEEEE), borderRadius: BorderRadius.circular(15)),
               child: TextField(
                 onChanged: (value) => {},
                 decoration: const InputDecoration(
@@ -204,8 +211,7 @@ class Header extends StatelessWidget {
                     focusedErrorBorder: InputBorder.none,
                     hintText: "Search a product",
                     prefixIcon: Icon(Icons.search),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15)),
               ),
             ),
           ],
